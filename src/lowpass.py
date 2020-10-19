@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pyfftw
 
 
 def sinc(x: np.float):
@@ -35,8 +36,8 @@ def fftea_time_np(signal: np.array, window: np.array):
     nfft = determine_size(len(signal) + len(window) - 1)
     xzp = np.zeros(nfft)
     hzp = np.zeros(nfft)
-    xzp[:len(signal)] = signal
-    hzp[:len(window)] = window
+    xzp[0:len(signal)] = signal
+    hzp[0:len(window)] = window
     X = np.fft.fft(xzp)
     H = np.fft.fft(hzp)
     Y = np.multiply(X, H)
@@ -44,18 +45,36 @@ def fftea_time_np(signal: np.array, window: np.array):
     return np.real(y), np.imag(y)
 
 
+def fftea_time_fftw(signal: np.array, window: np.array):
+    nfft = determine_size(len(signal) + len(window) - 1)
+    xzp = pyfftw.empty_aligned(len(signal), dtype='float64')
+    hzp = pyfftw.empty_aligned(len(window), dtype='float64')
+    xzp[0:len(signal)] = signal
+    hzp[0:len(window)] = window
+    X = pyfftw.interfaces.numpy_fft.fft(xzp, n=nfft)
+    H = pyfftw.interfaces.numpy_fft.fft(hzp, n=nfft)
+    Y = np.multiply(X, H)
+    y = pyfftw.interfaces.numpy_fft.ifft(Y, n=nfft)
+    return np.real(y), np.imag(y)
+
+
 if __name__ == "__main__":
-    frequencies = [440, 880, 1000, 2000]
+    frequencies = [440, 800, 1000, 2000]
     M = 256  # Signal size
     L = 256  # Filter size
     cutoff_freq = 600
     sampling_rate = 5000
-    sig = gen_sig(frequencies, M, sampling_rate)
-    h = window(L, cutoff_freq, sampling_rate)
-    np_filtered, error = fftea_time_np(sig, h)
-    plt.plot(sig)
-    plt.show()
-    plt.plot(h)
-    plt.show()
+    np_sig = gen_sig(frequencies, M, sampling_rate)
+    np_h = window(L, cutoff_freq, sampling_rate)
+
+    fftw_sig = gen_sig(frequencies, M, sampling_rate)
+    fftw_h = window(L, cutoff_freq, sampling_rate)
+
+    np_filtered, error = fftea_time_np(np_sig, np_h)
+    fftw_filtered, fftw_error = fftea_time_fftw(fftw_sig, fftw_h)
+
+    full_error = np.subtract(fftw_filtered, np_filtered)
     plt.plot(np_filtered)
+    plt.plot(fftw_filtered)
+    plt.plot(full_error)
     plt.show()

@@ -58,6 +58,46 @@ def fftea_time_fftw(signal: np.array, window: np.array):
     return np.real(y), np.imag(y)
 
 
+def fftea_time_cuda(signal: np.array, window: np.array):
+    import pycuda.autoinit
+    import pycuda.gpuarray as gpuarray
+    import skcuda.fft as cu_fft
+    import skcuda.linalg as linalg
+    ctx = pycuda.autoinit.make_default_context()
+    ctx.pop()
+    linalg.init()
+    nfft = determine_size(len(signal) + len(window) - 1)
+    # Move data to GPU
+    xzp = np.zeros(nfft)
+    hzp = np.zeros(nfft)
+    xzp[0:len(signal)] = signal
+    hzp[0:len(window)] = window
+    sig_gpu = gpuarray.empty((nfft,), dtype=np.float64)
+    win_gpu = gpuarray.empty((nfft,), dtype=np.float64)
+    sig_gpu.set(xzp)
+    win_gpu.set(hzp)
+
+    # Plan forwards
+    sig_fft_gpu = gpuarray.empty(nfft, np.complex128)
+    win_fft_gpu = gpuarray.empty(nfft, np.complex128)
+    sig_plan_forward = cu_fft.Plan(sig_fft_gpu.shape, np.float64, np.complex128)
+    win_plan_forward = cu_fft.Plan(win_fft_gpu.shape, np.float64, np.complex128)
+    cu_fft.fft(sig_gpu, sig_fft_gpu, sig_plan_forward)
+    cu_fft.fft(win_gpu, win_fft_gpu, win_plan_forward)
+
+    # Convolve
+    y_gpu = linalg.multiply(sig_fft_gpu, win_fft_gpu, overwrite=True)
+    linalg.scale(2.0, y_gpu)
+
+    # Plan inverse
+    out_gpu = gpuarray.empty_like(y_gpu)
+    plan_inverse = cu_fft.Plan(y_gpu.shape, np.complex128, np.complex128)
+    cu_fft.ifft(y_gpu, out_gpu, plan_inverse, True)
+    out_np = np.zeros(len(out_gpu), np.complex128)
+    out_gpu.get(out_np)
+    return np.real(out_np), np.imag(out_np)
+
+
 if __name__ == "__main__":
     frequencies = [440, 800, 1000, 2000]
     M = 256  # Signal size
@@ -70,11 +110,18 @@ if __name__ == "__main__":
     fftw_sig = gen_sig(frequencies, M, sampling_rate)
     fftw_h = window(L, cutoff_freq, sampling_rate)
 
+    cuda_sig = gen_sig(frequencies, M, sampling_rate)
+    cuda_h = window(L, cutoff_freq, sampling_rate)
+
     np_filtered, error = fftea_time_np(np_sig, np_h)
     fftw_filtered, fftw_error = fftea_time_fftw(fftw_sig, fftw_h)
+    cuda_filtered, cuda_error = fftea_time_cuda(cuda_sig, cuda_h)
 
-    full_error = np.subtract(fftw_filtered, np_filtered)
+    tol = 1e-15
+    print(np.allclose(np_filtered, fftw_filtered, rtol=tol))
+    print(np.allclose(np_filtered, cuda_filtered, rtol=tol))
+    print(np.allclose(fftw_filtered, cuda_filtered, rtol=tol))
     plt.plot(np_filtered)
     plt.plot(fftw_filtered)
-    plt.plot(full_error)
+    plt.plot(cuda_filtered)
     plt.show()

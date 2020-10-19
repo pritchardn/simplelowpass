@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pyfftw
 
 
 def sinc(x: np.float):
@@ -44,6 +45,25 @@ def fftea_time_np(signal: np.array, window: np.array):
     return np.real(y), np.imag(y)
 
 
+def fftea_time_fftw(signal: np.array, window: np.array):
+    nfft = determine_size(len(signal) + len(window) - 1)
+    sig_a = pyfftw.empty_aligned(nfft, dtype='complex128')
+    sig_b = pyfftw.empty_aligned(nfft, dtype='complex128')
+    win_a = pyfftw.empty_aligned(nfft, dtype='complex128')
+    win_b = pyfftw.empty_aligned(nfft, dtype='complex128')
+    sig_a[:len(signal)] = signal
+    win_a[:len(window)] = window
+    sig_fft_obj = pyfftw.FFTW(sig_a, sig_b)
+    win_fft_obj = pyfftw.FFTW(win_a, win_b)
+    X = sig_fft_obj()
+    H = win_fft_obj()
+    Y = np.multiply(X, H)
+    sig_c = pyfftw.empty_aligned(nfft, dtype='complex128')
+    sig_ifft_obj = pyfftw.FFTW(Y, sig_c, direction='FFTW_BACKWARD')
+    y = sig_ifft_obj()
+    return np.real(y), np.imag(y)
+
+
 if __name__ == "__main__":
     frequencies = [440, 880, 1000, 2000]
     M = 256  # Signal size
@@ -52,10 +72,13 @@ if __name__ == "__main__":
     sampling_rate = 5000
     sig = gen_sig(frequencies, M, sampling_rate)
     h = window(L, cutoff_freq, sampling_rate)
+    fftea_time_fftw(sig, h)
     np_filtered, error = fftea_time_np(sig, h)
+    fftw_filtered, fftw_error = fftea_time_fftw(sig, h)
     plt.plot(sig)
     plt.show()
     plt.plot(h)
     plt.show()
     plt.plot(np_filtered)
+    plt.plot(fftw_filtered)
     plt.show()

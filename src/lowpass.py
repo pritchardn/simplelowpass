@@ -33,9 +33,7 @@ def determine_size(length):
     return int(2 ** np.ceil(np.log2(length))) - 1
 
 
-def fftea_time_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
-    signal = gen_sig(freqs, sig_len, srate)
-    window = gen_window(win_len, cut_freq, srate)
+def fftea_time_np(signal: np.array, window: np.array):
     nfft = determine_size(len(signal) + len(window) - 1)
     sig_zero_pad = np.zeros(nfft)
     win_zero_pad = np.zeros(nfft)
@@ -48,10 +46,8 @@ def fftea_time_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate:
     return out
 
 
-def fftea_time_fftw(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
+def fftea_time_fftw(signal: np.array, window: np.array):
     import pyfftw
-    signal = gen_sig(freqs, sig_len, srate)
-    window = gen_window(win_len, cut_freq, srate)
     nfft = determine_size(len(signal) + len(window) - 1)
     sig_zero_pad = pyfftw.empty_aligned(len(signal), dtype='float64')
     win_zero_pad = pyfftw.empty_aligned(len(window), dtype='float64')
@@ -64,7 +60,7 @@ def fftea_time_fftw(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     return out
 
 
-def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
+def fftea_time_cuda(signal: np.array, window: np.array):
     import pycuda.autoinit
     import pycuda.gpuarray as gpuarray
     import skcuda.fft as cu_fft
@@ -72,8 +68,6 @@ def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     ctx = pycuda.autoinit.make_default_context()
     ctx.pop()
     linalg.init()
-    signal = gen_sig(freqs, sig_len, srate)
-    window = gen_window(win_len, cut_freq, srate)
     nfft = determine_size(len(signal) + len(window) - 1)
     # Move data to GPU
     sig_zero_pad = np.zeros(nfft)
@@ -106,9 +100,7 @@ def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     return out_np
 
 
-def pointwise_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
-    signal = gen_sig(freqs, sig_len, srate)
-    window = gen_window(win_len, cut_freq, srate)
+def pointwise_np(signal: np.array, window: np.array):
     return np.convolve(signal, window).astype(np.complex128)
 
 
@@ -123,8 +115,10 @@ if __name__ == "__main__":
                'numpy_pointwise': pointwise_np}
 
     for m_name, func in methods.items():
-        result = func(config['frequencies'], config['sig_len'], config['win_len'],
-                      config['cutoff_freq'], config['sampling_rate'])
+        sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
+        win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+
+        result = func(sig, win)
         outname = dirout + config['name'] + '_' + str(m_name) + '.out'
         np.save(outname, result)
 """

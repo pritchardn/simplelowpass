@@ -31,7 +31,7 @@ def gen_window(length, cutoff, sample_rate):
 
 
 def determine_size(length):
-    return int(2 ** np.ceil(np.log2(length)))
+    return int(2 ** np.ceil(np.log2(length))) - 1
 
 
 def fftea_time_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):

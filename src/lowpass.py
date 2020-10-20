@@ -107,6 +107,12 @@ def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     return np.real(out_np), np.imag(out_np)
 
 
+def pointwise_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
+    signal = gen_sig(freqs, sig_len, srate)
+    window = gen_window(win_len, cut_freq, srate)
+    return np.convolve(signal, window)
+
+
 if __name__ == "__main__":
     fname = sys.argv[1]
     with open(fname, 'r') as fp:
@@ -118,7 +124,8 @@ if __name__ == "__main__":
                                                 config['cutoff_freq'], config['sampling_rate'])
     cuda_filtered, cuda_error = fftea_time_cuda(config['frequencies'], config['sig_len'], config['win_len'],
                                                 config['cutoff_freq'], config['sampling_rate'])
-
+    pointwise_filtered = pointwise_np(config['frequencies'], config['sig_len'], config['win_len'],
+                                 config['cutoff_freq'], config['sampling_rate'])
     tol = 1e-15
     print(np.allclose(np_filtered, fftw_filtered, rtol=tol))
     print(np.allclose(np_filtered, cuda_filtered, rtol=tol))
@@ -126,4 +133,5 @@ if __name__ == "__main__":
     plt.plot(np_filtered)
     plt.plot(fftw_filtered)
     plt.plot(cuda_filtered)
+    plt.plot(pointwise_filtered)
     plt.show()

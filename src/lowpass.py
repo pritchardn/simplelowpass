@@ -1,7 +1,6 @@
 import json
 import sys
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -46,7 +45,7 @@ def fftea_time_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate:
     win_fft = np.fft.fft(win_zero_pad)
     out_fft = np.multiply(sig_fft, win_fft)
     out = np.fft.ifft(out_fft)
-    return np.real(out), np.imag(out)
+    return out
 
 
 def fftea_time_fftw(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
@@ -62,7 +61,7 @@ def fftea_time_fftw(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     win_fft = pyfftw.interfaces.numpy_fft.fft(win_zero_pad, n=nfft)
     out_fft = np.multiply(sig_fft, win_fft)
     out = pyfftw.interfaces.numpy_fft.ifft(out_fft, n=nfft)
-    return np.real(out), np.imag(out)
+    return out
 
 
 def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
@@ -104,34 +103,34 @@ def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     cu_fft.ifft(out_fft, out_gpu, plan_inverse, True)
     out_np = np.zeros(len(out_gpu), np.complex128)
     out_gpu.get(out_np)
-    return np.real(out_np), np.imag(out_np)
+    return out_np
 
 
 def pointwise_np(freqs: list, sig_len: int, win_len: int, cut_freq: int, srate: int):
     signal = gen_sig(freqs, sig_len, srate)
     window = gen_window(win_len, cut_freq, srate)
-    return np.convolve(signal, window)
+    return np.convolve(signal, window).astype(np.complex128)
 
 
 if __name__ == "__main__":
     fname = sys.argv[1]
+    dirout = sys.argv[2]
+
     with open(fname, 'r') as fp:
         config = json.load(fp)
 
-    np_filtered, error = fftea_time_np(config['frequencies'], config['sig_len'], config['win_len'],
-                                       config['cutoff_freq'], config['sampling_rate'])
-    fftw_filtered, fftw_error = fftea_time_fftw(config['frequencies'], config['sig_len'], config['win_len'],
-                                                config['cutoff_freq'], config['sampling_rate'])
-    cuda_filtered, cuda_error = fftea_time_cuda(config['frequencies'], config['sig_len'], config['win_len'],
-                                                config['cutoff_freq'], config['sampling_rate'])
-    pointwise_filtered = pointwise_np(config['frequencies'], config['sig_len'], config['win_len'],
-                                 config['cutoff_freq'], config['sampling_rate'])
-    tol = 1e-15
-    print(np.allclose(np_filtered, fftw_filtered, rtol=tol))
-    print(np.allclose(np_filtered, cuda_filtered, rtol=tol))
-    print(np.allclose(fftw_filtered, cuda_filtered, rtol=tol))
+    methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
+               'numpy_pointwise': pointwise_np}
+
+    for m_name, func in methods.items():
+        result = func(config['frequencies'], config['sig_len'], config['win_len'],
+                      config['cutoff_freq'], config['sampling_rate'])
+        outname = dirout + config['name'] + '_' + str(m_name) + '.out'
+        np.save(outname, result)
+"""
     plt.plot(np_filtered)
     plt.plot(fftw_filtered)
     plt.plot(cuda_filtered)
     plt.plot(pointwise_filtered)
     plt.show()
+"""

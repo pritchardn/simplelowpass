@@ -1,3 +1,6 @@
+import json
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -104,20 +107,17 @@ def fftea_time_cuda(freqs: list, sig_len: int, win_len: int, cut_freq: int, srat
     return np.real(out_np), np.imag(out_np)
 
 
-def plot():
-    pass
-
-
 if __name__ == "__main__":
-    frequencies = [440, 800, 1000, 2000]
-    M = 256  # Signal size
-    L = 256  # Filter size
-    cutoff_freq = 600
-    sampling_rate = 5000
+    fname = sys.argv[1]
+    with open(fname, 'r') as fp:
+        config = json.load(fp)
 
-    np_filtered, error = fftea_time_np(frequencies, M, L, cutoff_freq, sampling_rate)
-    fftw_filtered, fftw_error = fftea_time_fftw(frequencies, M, L, cutoff_freq, sampling_rate)
-    cuda_filtered, cuda_error = fftea_time_cuda(frequencies, M, L, cutoff_freq, sampling_rate)
+    np_filtered, error = fftea_time_np(config['frequencies'], config['sig_len'], config['win_len'],
+                                       config['cutoff_freq'], config['sampling_rate'])
+    fftw_filtered, fftw_error = fftea_time_fftw(config['frequencies'], config['sig_len'], config['win_len'],
+                                                config['cutoff_freq'], config['sampling_rate'])
+    cuda_filtered, cuda_error = fftea_time_cuda(config['frequencies'], config['sig_len'], config['win_len'],
+                                                config['cutoff_freq'], config['sampling_rate'])
 
     tol = 1e-15
     print(np.allclose(np_filtered, fftw_filtered, rtol=tol))

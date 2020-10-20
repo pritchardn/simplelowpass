@@ -8,7 +8,9 @@ if __name__ == '__main__':
                'sampling_rate': 5000}
     input_3 = {'frequencies': [440, 800, 1000, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 500,
                'sampling_rate': 5000}
-    inputs = [input_1, input_2, input_3]
+    input_4 = {'frequencies': [440, 800, 1200, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
+               'sampling_rate': 5000}
+    inputs = [input_1, input_2, input_3, input_4]
     file_loc = sys.argv[1]
     for i in range(len(inputs)):
         with open(file_loc + str(i) + '.in', 'w') as fp:

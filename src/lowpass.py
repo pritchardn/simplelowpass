@@ -105,21 +105,31 @@ def pointwise_np(signal: np.array, window: np.array):
 
 
 if __name__ == "__main__":
-    fname = sys.argv[1]
-    dirout = sys.argv[2]
-
-    with open(fname, 'r') as fp:
-        config = json.load(fp)
+    fname = sys.argv[2]
+    dirout = sys.argv[3]
+    if int(sys.argv[1]) == 1:
+        load_direct = True
+    else:
+        load_direct = False
+        with open(fname, 'r') as fp:
+            config = json.load(fp)
 
     methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
                'numpy_pointwise': pointwise_np}
 
     for m_name, func in methods.items():
-        sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
-        win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+        if load_direct:
+            container = np.load(fname)
+            sig = container['sig']
+            win = container['win']
+            name = str(container['name'])
+            outname = dirout + name + '_' + str(m_name) + '.out'
+        else:
+            sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
+            win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+            outname = dirout + config['name'] + '_' + str(m_name) + '.out'
 
         result = func(sig, win)
-        outname = dirout + config['name'] + '_' + str(m_name) + '.out'
         np.save(outname, result)
 """
     plt.plot(np_filtered)

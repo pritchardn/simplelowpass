@@ -44,7 +44,7 @@ def plot_filtered(filtered):
 
 
 if __name__ == '__main__':
-    fname = sys.argv[1]
+    fname = '../data/0.in.npz'
     container = np.load(fname)
     signal = container['sig']
     window = container['win']

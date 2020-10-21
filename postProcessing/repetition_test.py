@@ -13,11 +13,11 @@ def normalize_signal(a):
 
 
 def correlate(a, b):
-    return np.absolute(np.correlate(a, b) / len(a))
+    return np.absolute(np.correlate(a, b, mode='valid') / len(a))
 
 
 if __name__ == '__main__':
-    fin = sys.argv[1]
+    dir_in = sys.argv[1]
     fout = sys.argv[2]
     fpure = sys.argv[3]
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         for method in methods:
             average = 0.0
             i = 0
-            for name in glob.glob(fin + '*_' + method + '.out.npy'):
+            for name in glob.glob(dir_in + '*_' + method + '.out.npy'):
                 # Compute the normalized cross-correlation of a filtered noisy signal with the filtered pure signal.
                 # This gives us a measure of how effective each method is at filtering.
                 print(name)

@@ -136,11 +136,11 @@ if __name__ == "__main__":
             if 'noise' in container.keys():
                 outname = dirout + 'noisy/' + name + '_' + str(m_name) + '.out'
             else:
-                outname = dirout + name + '_' + str(m_name) + '.out'
+                outname = dirout + 'clean/' + name + '_' + str(m_name) + '.out'
         else:
             sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
             win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
-            outname = dirout + config['name'] + '_' + str(m_name) + '.out'
+            outname = dirout + 'clean/' + config['name'] + '_' + str(m_name) + '.out'
             if 'noise' in config.keys():
                 sig = add_noise(sig, config['noise']['mean'], config['noise']['std'], config['noise']['frequency'],
                                 config['sampling_rate'], config['noise']['seed'], config['noise']['alpha'])

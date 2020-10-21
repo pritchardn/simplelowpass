@@ -2,7 +2,9 @@
 
 mkdir -p ../data/
 mkdir -p ../results/config/noisy
+mkdir -p ../results/config/clean
 mkdir -p ../results/raw/noisy
+mkdir -p ../results/raw/clean
 echo "Generating Data"
 python3 input_generator.py ../data/ 10
 echo "Processing from Config"
@@ -23,4 +25,4 @@ do
 done
 
 echo "Generating Repeat Analysis"
-python3 ../postProcessing/repetition_test.py "../results/raw/noisy/" "./repeat" "../results/raw/0_numpy_pointwise.out.npy"
+python3 ../postProcessing/repetition_test.py "../results/raw/noisy/" "../postProcessing/repeat" "../results/raw/3_numpy_pointwise.out.npy"

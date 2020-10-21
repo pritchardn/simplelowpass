@@ -11,6 +11,7 @@ def plot_signal(sig):
     ax = fig.add_subplot(111)
     ax.plot(sig)
     ax.set_xlim(0, 256)
+    ax.set_ylim(-3.5, 3.5)
     ax.set(title='Input signal (440, 880, 1000, 2000) Hz',
            ylabel='Amplitude',
            xlabel='Time (samples)')

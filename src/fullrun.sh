@@ -1,8 +1,8 @@
 #!/bin/bash
 
 mkdir -p ../data/
-mkdir -p ../results/config/
-mkdir -p ../results/raw/
+mkdir -p ../results/config/noisy
+mkdir -p ../results/raw/noisy
 echo "Generating Data"
 python3 input_generator.py ../data/ 10
 echo "Processing from Config"

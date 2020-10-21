@@ -31,4 +31,6 @@ if __name__ == '__main__':
         if 'noise' in inputs[i].keys():
             sig = add_noise(sig, inputs[i]['noise']['mean'], inputs[i]['noise']['std'], inputs[i]['noise']['frequency'],
                             inputs[i]['sampling_rate'], inputs[i]['noise']['seed'], inputs[i]['noise']['alpha'])
-        np.savez(fname, sig=sig, win=win, name=inputs[i]['name'])
+            np.savez(fname, sig=sig, win=win, name=inputs[i]['name'], noise=True)
+        else:
+            np.savez(fname, sig=sig, win=win, name=inputs[i]['name'])

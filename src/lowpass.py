@@ -144,10 +144,3 @@ if __name__ == "__main__":
 
         result = func(sig, win)
         np.save(outname, result)
-"""
-    plt.plot(np_filtered)
-    plt.plot(fftw_filtered)
-    plt.plot(cuda_filtered)
-    plt.plot(pointwise_filtered)
-    plt.show()
-"""

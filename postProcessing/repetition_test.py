@@ -1,7 +1,20 @@
-import sys
 import csv
 import glob
+import sys
+
 import numpy as np
+
+
+def normalize_signal(a):
+    amean = np.mean(a)
+    astd = np.std(a)
+    a /= astd
+    return a
+
+
+def correlate(a, b):
+    return np.absolute(np.correlate(a, b) / len(a))
+
 
 if __name__ == '__main__':
     fin = sys.argv[1]
@@ -9,12 +22,9 @@ if __name__ == '__main__':
     fpure = sys.argv[3]
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
     # Load filter of a pure signal
-    ground_truth = np.load(fpure)
+    ground_truth = normalize_signal(np.load(fpure))
     # Compute the normalized cross-correlation of itself (expecting 1)
-    gmean = np.mean(ground_truth)
-    gstd = np.std(ground_truth)
-    ground_truth /= gstd
-    gcorr = np.absolute(np.correlate(ground_truth, ground_truth)/len(ground_truth))
+    gcorr = correlate(ground_truth, ground_truth)
     print(gcorr)
     with open(fout + '.csv', 'w', newline='') as csvf:
         fieldnames = ['Method', 'Normalized Cross Correlation (NCC)']
@@ -28,13 +38,9 @@ if __name__ == '__main__':
                 # Compute the normalized cross-correlation of a filtered noisy signal with the filtered pure signal.
                 # This gives us a measure of how effective each method is at filtering.
                 print(name)
-                filtered = np.load(name)
-                fmean = np.mean(filtered)
-                fst = np.std(filtered)
-                filtered /= fst
-                corr = np.absolute(np.correlate(filtered, ground_truth) / len(filtered))
+                filtered = normalize_signal(np.load(name))
+                corr = correlate(filtered, ground_truth)
                 print(corr)
                 average += corr
                 i += 1
-            writer.writerow({fieldnames[0]: method, fieldnames[1]: average/i})
-
+            writer.writerow({fieldnames[0]: method, fieldnames[1]: average / i})

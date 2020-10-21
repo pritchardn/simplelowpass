@@ -2,6 +2,7 @@ import json
 import sys
 
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def sinc(x: np.float64):
@@ -27,6 +28,15 @@ def gen_window(length, cutoff, sample_rate):
         hsupp = (i - length / 2)
         win[i] = ham * alpha * sinc(alpha * hsupp)
     return win
+
+
+def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
+    np.random.seed(seed)
+    samples = alpha * np.random.normal(mean, std, size=len(signal))
+    for i in range(len(signal)):
+        samples[i] += np.sin(2 * np.pi * i * freq / sample_rate)
+    np.add(signal, samples, out=signal)
+    return signal
 
 
 def determine_size(length):
@@ -127,6 +137,9 @@ if __name__ == "__main__":
         else:
             sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
             win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+            if 'noise' in config.keys():
+                sig = add_noise(sig, config['noise']['mean'], config['noise']['std'], config['noise']['frequency'],
+                                config['sampling_rate'], config['noise']['seed'], config['noise']['alpha'])
             outname = dirout + config['name'] + '_' + str(m_name) + '.out'
 
         result = func(sig, win)

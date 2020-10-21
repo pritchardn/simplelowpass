@@ -2,9 +2,9 @@
 
 mkdir -p ../data/
 mkdir -p ../results/config/
-mkdir ../results/raw/
+mkdir -p ../results/raw/
 echo "Generating Data"
-python3 input_generator.py ../data/
+python3 input_generator.py ../data/ 10
 echo "Processing from Config"
 # shellcheck disable=SC2125
 CONF_FILES="../data/*.in"

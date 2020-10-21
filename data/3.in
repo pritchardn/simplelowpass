@@ -1,0 +1,13 @@
+{
+  "cutoff_freq": 600,
+  "frequencies": [
+    440,
+    800,
+    1200,
+    2000
+  ],
+  "name": "3",
+  "sampling_rate": 5000,
+  "sig_len": 256,
+  "win_len": 256
+}

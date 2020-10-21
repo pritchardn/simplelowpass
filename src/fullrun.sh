@@ -25,4 +25,4 @@ do
 done
 
 echo "Generating Repeat Analysis"
-python3 ../postProcessing/repetition_test.py "../results/raw/noisy/" "../postProcessing/repeat" "../results/raw/3_numpy_pointwise.out.npy"
+python3 ../postProcessing/repetition_test.py "../results/raw/noisy/" "../postProcessing/repeat" "../results/raw/clean/3_numpy_pointwise.out.npy"

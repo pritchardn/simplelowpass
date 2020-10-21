@@ -17,7 +17,7 @@ if __name__ == '__main__':
               {'frequencies': [440, 800, 1200, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
                'sampling_rate': 5000, 'name': '3'}]
     for i in range(num_random):
-        inputs.append({'frequencies': [440, 800, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
+        inputs.append({'frequencies': [440, 800, 1200, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
                        'sampling_rate': 5000,
                        'noise': {'mean': 0, 'std': 1, 'frequency': 1200, 'seed': i, 'alpha': 0.1},
                        'name': str(i + 4)})

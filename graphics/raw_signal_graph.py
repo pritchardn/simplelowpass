@@ -53,6 +53,7 @@ if __name__ == '__main__':
     sns.set_theme()
     sns.set_context("paper")
     sns.set_style("white")
+    sns.color_palette("colorblind")
 
     plot_window(window)
     plot_signal(signal)

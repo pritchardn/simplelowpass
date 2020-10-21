@@ -99,7 +99,7 @@ def fftea_time_cuda(signal: np.array, window: np.array):
 
     # Convolve
     out_fft = linalg.multiply(sig_fft_gpu, win_fft_gpu, overwrite=True)
-    linalg.scale(2.0, out_fft)
+    linalg.scale(2.4, out_fft)
 
     # Plan inverse
     out_gpu = gpuarray.empty_like(out_fft)

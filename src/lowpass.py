@@ -2,7 +2,9 @@ import json
 import sys
 
 import numpy as np
-from matplotlib import pyplot as plt
+
+precisions = {'double': {'float': np.float64, 'complex': np.complex128},
+              'single': {'float': np.float32, 'complex': np.complex64}}
 
 
 def sinc(x: np.float64):
@@ -43,34 +45,34 @@ def determine_size(length):
     return int(2 ** np.ceil(np.log2(length))) - 1
 
 
-def fftea_time_np(signal: np.array, window: np.array):
+def fftea_time_np(signal: np.array, window: np.array, prec: dict):
     nfft = determine_size(len(signal) + len(window) - 1)
-    sig_zero_pad = np.zeros(nfft)
-    win_zero_pad = np.zeros(nfft)
+    sig_zero_pad = np.zeros(nfft, dtype=prec['float'])
+    win_zero_pad = np.zeros(nfft, dtype=prec['float'])
     sig_zero_pad[0:len(signal)] = signal
     win_zero_pad[0:len(window)] = window
     sig_fft = np.fft.fft(sig_zero_pad)
     win_fft = np.fft.fft(win_zero_pad)
     out_fft = np.multiply(sig_fft, win_fft)
     out = np.fft.ifft(out_fft)
-    return out
+    return out.astype(prec['complex'])
 
 
-def fftea_time_fftw(signal: np.array, window: np.array):
+def fftea_time_fftw(signal: np.array, window: np.array, prec: dict):
     import pyfftw
     nfft = determine_size(len(signal) + len(window) - 1)
-    sig_zero_pad = pyfftw.empty_aligned(len(signal), dtype='float64')
-    win_zero_pad = pyfftw.empty_aligned(len(window), dtype='float64')
+    sig_zero_pad = pyfftw.empty_aligned(len(signal), dtype=prec['float'])
+    win_zero_pad = pyfftw.empty_aligned(len(window), dtype=prec['float'])
     sig_zero_pad[0:len(signal)] = signal
     win_zero_pad[0:len(window)] = window
     sig_fft = pyfftw.interfaces.numpy_fft.fft(sig_zero_pad, n=nfft)
     win_fft = pyfftw.interfaces.numpy_fft.fft(win_zero_pad, n=nfft)
     out_fft = np.multiply(sig_fft, win_fft)
     out = pyfftw.interfaces.numpy_fft.ifft(out_fft, n=nfft)
-    return out
+    return out.astype(prec['complex'])
 
 
-def fftea_time_cuda(signal: np.array, window: np.array):
+def fftea_time_cuda(signal: np.array, window: np.array, prec: dict):
     import pycuda.autoinit
     import pycuda.gpuarray as gpuarray
     import skcuda.fft as cu_fft
@@ -80,38 +82,38 @@ def fftea_time_cuda(signal: np.array, window: np.array):
     linalg.init()
     nfft = determine_size(len(signal) + len(window) - 1)
     # Move data to GPU
-    sig_zero_pad = np.zeros(nfft)
-    win_zero_pad = np.zeros(nfft)
+    sig_zero_pad = np.zeros(nfft, dtype=prec['float'])
+    win_zero_pad = np.zeros(nfft, dtype=prec['float'])
     sig_zero_pad[0:len(signal)] = signal
     win_zero_pad[0:len(window)] = window
-    sig_gpu = gpuarray.empty(sig_zero_pad.shape, dtype=np.float64)
-    win_gpu = gpuarray.empty(win_zero_pad.shape, dtype=np.float64)
+    sig_gpu = gpuarray.empty(sig_zero_pad.shape, dtype=prec['float'])
+    win_gpu = gpuarray.empty(win_zero_pad.shape, dtype=prec['float'])
     sig_gpu.set(sig_zero_pad)
     win_gpu.set(win_zero_pad)
 
     # Plan forwards
-    sig_fft_gpu = gpuarray.empty(nfft, np.complex128)
-    win_fft_gpu = gpuarray.empty(nfft, np.complex128)
-    sig_plan_forward = cu_fft.Plan(sig_fft_gpu.shape, np.float64, np.complex128)
-    win_plan_forward = cu_fft.Plan(win_fft_gpu.shape, np.float64, np.complex128)
+    sig_fft_gpu = gpuarray.empty(nfft, dtype=prec['complex'])
+    win_fft_gpu = gpuarray.empty(nfft, dtype=prec['complex'])
+    sig_plan_forward = cu_fft.Plan(sig_fft_gpu.shape, prec['float'], prec['complex'])
+    win_plan_forward = cu_fft.Plan(win_fft_gpu.shape, prec['float'], prec['complex'])
     cu_fft.fft(sig_gpu, sig_fft_gpu, sig_plan_forward)
     cu_fft.fft(win_gpu, win_fft_gpu, win_plan_forward)
 
     # Convolve
     out_fft = linalg.multiply(sig_fft_gpu, win_fft_gpu, overwrite=True)
-    linalg.scale(2.4, out_fft)
+    linalg.scale(2.0, out_fft)
 
     # Plan inverse
     out_gpu = gpuarray.empty_like(out_fft)
-    plan_inverse = cu_fft.Plan(out_fft.shape, np.complex128, np.complex128)
+    plan_inverse = cu_fft.Plan(out_fft.shape, prec['complex'], prec['complex'])
     cu_fft.ifft(out_fft, out_gpu, plan_inverse, True)
-    out_np = np.zeros(len(out_gpu), np.complex128)
+    out_np = np.zeros(len(out_gpu), prec['complex'])
     out_gpu.get(out_np)
     return out_np
 
 
-def pointwise_np(signal: np.array, window: np.array):
-    return np.convolve(signal, window, mode='full').astype(np.complex128)
+def pointwise_np(signal: np.array, window: np.array, prec: dict):
+    return np.convolve(signal, window, mode='full').astype(prec['complex'])
 
 
 if __name__ == "__main__":
@@ -123,10 +125,16 @@ if __name__ == "__main__":
         load_direct = False
         with open(fname, 'r') as fp:
             config = json.load(fp)
+    if len(sys.argv) <= 4:
+        precision = precisions['double']  # default beahviour
+    elif int(sys.argv[4]) == 1:
+        precision = precisions['double']
+    else:
+        precision = precisions['single']
 
     methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
                'numpy_pointwise': pointwise_np}
-
+    print(precision)
     for m_name, func in methods.items():
         if load_direct:
             container = np.load(fname)
@@ -146,5 +154,5 @@ if __name__ == "__main__":
                                 config['sampling_rate'], config['noise']['seed'], config['noise']['alpha'])
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
-        result = func(sig, win)
+        result = func(sig, win, precision)
         np.save(outname, result)

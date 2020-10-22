@@ -14,7 +14,7 @@ RAW_FILES="../data/*.npz"
 for f in $CONF_FILES
 do
   echo "Processing $f"
-  python3 lowpass.py 0 "$f" "../results/config/"
+  python3 lowpass.py 0 "$f" "../results/config/" 1
 done
 
 echo "Processing from direct files"

@@ -24,5 +24,8 @@ do
   python3 lowpass.py 1 "$f" "../results/raw/"
 done
 
-echo "Generating Repeat Analysis"
+echo "Repetition Analysis"
 python3 ./postProcessing/repetition_test.py "../results/raw/noisy/" "./postProcessing/repeat" "../results/raw/clean/3_numpy_pointwise.out.npy"
+
+echo "Reproduction Analysis 1"
+python3 ./postProcessing/reproduce_test_1.py "../results/raw/clean/" "./postProcessing/reproduce1"

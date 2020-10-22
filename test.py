@@ -1,16 +1,5 @@
 import numpy as np
-import glob
-
-
-def normalize_signal(a):
-    amean = np.mean(a)
-    astd = np.std(a)
-    a /= astd
-    return a
-
-
-def correlate(a, b):
-    return np.absolute(np.correlate(a, b, mode='valid') / len(a))
+from postProcessing.utils import normalize_signal, correlate
 
 
 if __name__ == '__main__':

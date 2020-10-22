@@ -134,7 +134,6 @@ if __name__ == "__main__":
 
     methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
                'numpy_pointwise': pointwise_np}
-    print(precision)
     for m_name, func in methods.items():
         if load_direct:
             container = np.load(fname)

@@ -35,3 +35,6 @@ python3 ./postProcessing/repetition_test.py "../results/double/raw/noisy/" "./po
 
 echo "Reproduction Analysis 1"
 python3 ./postProcessing/reproduce_test_1.py "../results/double/raw/clean/" "./postProcessing/reproduce1"
+
+echo "Reproduction Analysis 2"
+python3 ./postProcessing/reproduce_test_2.py "../results/single/raw/clean/" "../results/double/raw/clean/" "./postProcessing/reproduce2"

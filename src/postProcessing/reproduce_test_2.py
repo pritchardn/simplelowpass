@@ -38,7 +38,7 @@ if __name__ == '__main__':
         row = {fieldnames[0]: 'Single vs. Double (NCC)'}
         j = 1
         for m in methods:
-            outs[m][0] /= i
+            outs[m] /= i
             row[fieldnames[j]] = outs[m][0]
             j += 1
         writer.writerow(row)

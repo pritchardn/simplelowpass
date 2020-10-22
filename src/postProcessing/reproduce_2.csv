@@ -1,0 +1,2 @@
+Precision (NCC),cufft,fftw,numpy_fft,numpy_pointwise
+Single vs. Double (NCC),1.0004947183683734,1.0002473830930367,1.0002473740134672,1.0002473773730982

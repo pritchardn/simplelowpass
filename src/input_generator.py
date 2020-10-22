@@ -10,7 +10,7 @@ if __name__ == '__main__':
     num_random = int(sys.argv[2])
     inputs = [{'frequencies': [440, 800, 1000, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
                'sampling_rate': 5000, 'name': '0'},
-              {'frequencies': [440, 800, 1000, 2000], 'sig_len': 256, 'win_len': 128, 'cutoff_freq': 600,
+              {'frequencies': [440, 800, 1000, 2000], 'sig_len': 384, 'win_len': 128, 'cutoff_freq': 600,
                'sampling_rate': 5000, 'name': '1'},
               {'frequencies': [440, 800, 1000, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 500,
                'sampling_rate': 5000, 'name': '2'},

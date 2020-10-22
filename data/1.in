@@ -8,6 +8,6 @@
   ],
   "name": "1",
   "sampling_rate": 5000,
-  "sig_len": 256,
+  "sig_len": 384,
   "win_len": 128
 }

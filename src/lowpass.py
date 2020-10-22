@@ -111,7 +111,7 @@ def fftea_time_cuda(signal: np.array, window: np.array):
 
 
 def pointwise_np(signal: np.array, window: np.array):
-    return np.convolve(signal, window).astype(np.complex128)
+    return np.convolve(signal, window, mode='full').astype(np.complex128)
 
 
 if __name__ == "__main__":

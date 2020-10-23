@@ -16,10 +16,7 @@ def correlate(a, b):
     return np.absolute(np.correlate(a, b, mode='valid') / len(a))
 
 
-if __name__ == '__main__':
-    dir_sin = sys.argv[1]
-    dir_doub = sys.argv[2]
-    fout = sys.argv[3]
+def main(dir_sin, dir_doub, fout):
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
     precision = ['single', 'double']
 
@@ -44,3 +41,10 @@ if __name__ == '__main__':
             row[fieldnames[j]] = outs[m][0]
             j += 1
         writer.writerow(row)
+
+
+if __name__ == '__main__':
+    dir_single = sys.argv[1]
+    dir_double = sys.argv[2]
+    file_out = sys.argv[3]
+    main(dir_single, dir_double, file_out)

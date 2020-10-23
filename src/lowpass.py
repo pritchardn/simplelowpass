@@ -116,26 +116,11 @@ def pointwise_np(signal: np.array, window: np.array, prec: dict):
     return np.convolve(signal, window, mode='full').astype(prec['complex'])
 
 
-if __name__ == "__main__":
-    fname = sys.argv[2]
-    dirout = sys.argv[3]
-    if int(sys.argv[1]) == 1:
-        load_direct = True
-    else:
-        load_direct = False
-        with open(fname, 'r') as fp:
-            config = json.load(fp)
-    if len(sys.argv) <= 4:
-        precision = precisions['double']  # default beahviour
-    elif int(sys.argv[4]) == 1:
-        precision = precisions['double']
-    else:
-        precision = precisions['single']
-
+def main(fname, dirout, direct, prec):
     methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
                'numpy_pointwise': pointwise_np}
     for m_name, func in methods.items():
-        if load_direct:
+        if direct:
             container = np.load(fname)
             sig = container['sig']
             win = container['win']
@@ -153,5 +138,23 @@ if __name__ == "__main__":
                                 config['sampling_rate'], config['noise']['seed'], config['noise']['alpha'])
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
-        result = func(sig, win, precision)
+        result = func(sig, win, prec)
         np.save(outname, result)
+
+
+if __name__ == "__main__":
+    file_name = sys.argv[2]
+    directory_out = sys.argv[3]
+    if int(sys.argv[1]) == 1:
+        load_direct = True
+    else:
+        load_direct = False
+        with open(file_name, 'r') as fp:
+            config = json.load(fp)
+    if len(sys.argv) <= 4:
+        precision = precisions['double']  # default beahviour
+    elif int(sys.argv[4]) == 1:
+        precision = precisions['double']
+    else:
+        precision = precisions['single']
+    main(file_name, directory_out, load_direct, precision)

@@ -16,9 +16,8 @@ def correlate(a, b):
     return np.absolute(np.correlate(a, b, mode='valid') / len(a))
 
 
-if __name__ == '__main__':
-    dir_in = sys.argv[1]
-    fout = sys.argv[2]
+def main(dir_in, fout):
+
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
 
     with open(fout + '.csv', 'w', newline='') as csvf:
@@ -40,3 +39,9 @@ if __name__ == '__main__':
                 corr /= i
                 row[mj] = corr[0]  # So raw values are in the csv
             writer.writerow(row)
+
+
+if __name__ == '__main__':
+    directory_in = sys.argv[1]
+    file_out = sys.argv[2]
+    main(directory_in, file_out)

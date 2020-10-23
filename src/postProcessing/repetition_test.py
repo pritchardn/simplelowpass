@@ -16,10 +16,8 @@ def correlate(a, b):
     return np.absolute(np.correlate(a, b, mode='valid') / len(a))
 
 
-if __name__ == '__main__':
-    dir_in = sys.argv[1]
-    fout = sys.argv[2]
-    fpure = sys.argv[3]
+def main(dir_in, fout, fpure):
+
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
     # Load filter of a pure signal
     ground_truth = normalize_signal(np.load(fpure))
@@ -41,3 +39,10 @@ if __name__ == '__main__':
                 average += corr
                 i += 1
             writer.writerow({fieldnames[0]: method, fieldnames[1]: (average / i)[0]})
+
+
+if __name__ == '__main__':
+    directory_in = sys.argv[1]
+    file_out = sys.argv[2]
+    file_pure = sys.argv[3]
+    main(directory_in, file_out, file_pure)

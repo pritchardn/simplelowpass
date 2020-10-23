@@ -5,9 +5,8 @@ import numpy as np
 
 from lowpass import gen_sig, gen_window, add_noise
 
-if __name__ == '__main__':
-    file_loc = sys.argv[1]
-    num_random = int(sys.argv[2])
+
+def main(file_loc, num_random):
     inputs = [{'frequencies': [440, 800, 1000, 2000], 'sig_len': 256, 'win_len': 256, 'cutoff_freq': 600,
                'sampling_rate': 5000, 'name': '0'},
               {'frequencies': [440, 800, 1000, 2000], 'sig_len': 384, 'win_len': 128, 'cutoff_freq': 600,
@@ -34,3 +33,7 @@ if __name__ == '__main__':
             np.savez(fname, sig=sig, win=win, name=inputs[i]['name'], noise=True)
         else:
             np.savez(fname, sig=sig, win=win, name=inputs[i]['name'])
+
+
+if __name__ == '__main__':
+    main(sys.argv[1], int(sys.argv[2]))

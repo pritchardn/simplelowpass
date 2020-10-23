@@ -33,7 +33,9 @@ if __name__ == '__main__':
             for mi in methods:
                 x = normalize_signal(np.load(dir_sin + str(i) + '_' + mi + '.out.npy'))
                 y = normalize_signal(np.load(dir_doub + str(i) + '_' + mi + '.out.npy'))
-                outs[mi] += correlate(x, y)
+                auto = correlate(y, y)
+                comp = correlate(x, y)
+                outs[mi] += abs(auto - comp)
             i += 1
         row = {fieldnames[0]: 'Single vs. Double (NCC)'}
         j = 1

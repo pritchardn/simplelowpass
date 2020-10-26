@@ -38,7 +38,7 @@ def main(dir_in, fout, fpure):
                 corr = correlate(filtered, ground_truth)
                 average += corr
                 i += 1
-            writer.writerow({fieldnames[0]: method, fieldnames[1]: (average / i)[0]})
+            writer.writerow({fieldnames[0]: method, fieldnames[1]: round((average / i)[0], 15)})
 
 
 if __name__ == '__main__':

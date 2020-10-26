@@ -38,7 +38,7 @@ def main(dir_sin, dir_doub, fout):
         j = 1
         for m in methods:
             outs[m] /= i
-            row[fieldnames[j]] = outs[m][0]
+            row[fieldnames[j]] = round(outs[m][0], 15)
             j += 1
         writer.writerow(row)
 

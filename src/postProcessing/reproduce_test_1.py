@@ -37,7 +37,7 @@ def main(dir_in, fout):
             row = {fieldnames[0]: mi}
             for mj, corr in results.items():
                 corr /= i
-                row[mj] = corr[0]  # So raw values are in the csv
+                row[mj] = round(corr[0], 15)  # So raw values are in the csv
             writer.writerow(row)
 
 

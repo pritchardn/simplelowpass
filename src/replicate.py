@@ -101,6 +101,7 @@ def compare_files(f1, f2):
     with open(f2, 'r') as file2:
         lines2 = file2.readlines()
     if len(lines1) != len(lines2):
+        print("Number of lines do not match")
         return False
     for i in range(len(lines1)):
         if lines1[i] != lines2[i]:

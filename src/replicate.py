@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+import json
 from merklelib import MerkleTree
 
 from postProcessing.repetition_test import main as repeat
@@ -41,7 +42,8 @@ def system_summary():
             'memory': gpu.memoryTotal
         }
     merkletree.append([system_info[key] for key in system_info.keys()])
-    return system_info, merkletree.merkle_root
+    system_info['signature'] = merkletree.merkle_root
+    return system_info
 
 
 def make_dirs(base):
@@ -80,7 +82,21 @@ def process_direct(loc, results):
         lowp(f, results + 'double/raw/', True, 1)
 
 
-def main(base_loc):
+def compare_files(f1, f2):
+    with open(f1, 'r') as file1:
+        lines1 = file1.readlines()
+    with open(f2, 'r') as file2:
+        lines2 = file2.readlines()
+    if len(lines1) != len(lines2):
+        return False
+    for i in range(len(lines1)):
+        if lines1[i] != lines2[i]:
+            print(lines1[i] + " does not match " + lines2[i])
+            return False
+    return True
+
+
+def main(base_loc, published_loc):
     print("Creating result files")
     make_dirs(base_loc)
     print("Processing from config")
@@ -95,11 +111,15 @@ def main(base_loc):
     print("Reproduction Analysis 2")
     repro2(base_loc + 'results/single/raw/clean/', base_loc + 'results/double/raw/clean/',
            base_loc + 'results/reproduce2')
-    sys_summ, signature = system_summary()
-    print(signature)
-    print(sys_summ)
+    sys_summ = system_summary()
+    with open(base_loc + 'results/system.json', 'w') as file:
+        json.dump(sys_summ, file)
+    # TODO: Compare new results with published final_results
+    # TODO: Scientific replication test (same results, different machine)
+    # TODO: Computational replication test (same results, same machine)
 
 
 if __name__ == "__main__":
     result_loc = sys.argv[1]
-    main(result_loc)
+    published_loc = sys.argv[2]
+    main(result_loc, published_loc)

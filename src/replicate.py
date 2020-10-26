@@ -1,7 +1,9 @@
 import glob
+import json
 import os
 import sys
-import json
+import csv
+
 from merklelib import MerkleTree
 
 from postProcessing.repetition_test import main as repeat
@@ -96,7 +98,49 @@ def compare_files(f1, f2):
     return True
 
 
-def main(base_loc, published_loc):
+def replicate(base_loc, pub_loc):
+    scientific_rep = True
+    computational_rep = True
+    with open(base_loc + 'results/replicate.csv', 'w') as csvf:
+        fieldnames = ['Test', 'Pass']
+        writer = csv.DictWriter(csvf, fieldnames=fieldnames)
+        writer.writeheader()
+        if compare_files(base_loc + 'results/repeat.csv', pub_loc + 'repeat.csv'):
+            writer.writerow({'Test': 'Repeat', 'Pass': True})
+        else:
+            writer.writerow({'Test': 'Repeat', 'Pass': False})
+            scientific_rep = False
+            print("Repeat fails")
+        if compare_files(base_loc + 'results/reproduce1.csv', pub_loc + 'reproduce1.csv'):
+            writer.writerow({'Test': 'Reproduce 1', 'Pass': True})
+        else:
+            writer.writerow({'Test': 'Reproduce 1', 'Pass': False})
+            scientific_rep = False
+            print("Reproduce 1 fails")
+        if compare_files(base_loc + 'results/reproduce2.csv', pub_loc + 'reproduce2.csv'):
+            writer.writerow({'Test': 'Reproduce 2', 'Pass': True})
+        else:
+            writer.writerow({'Test': 'Reproduce 2', 'Pass': False})
+            scientific_rep = False
+            print("Reproduce 2 fails")
+        if not compare_files(base_loc + 'results/system.json', pub_loc + 'system.json'):
+            computational_rep = False
+            print("Machines differ")
+        if scientific_rep:
+            writer.writerow({'Test': 'Scientific Replicate', 'Pass': True})
+            if computational_rep:
+                writer.writerow({'Test': 'Computational Replicate', 'Pass': True})
+            else:
+                writer.writerow({'Test': 'Computational Replicate', 'Pass': False})
+        else:
+            writer.writerow({'Test': 'Scientific Replicate', 'Pass': False})
+            writer.writerow({'Test': 'Computational Replicate', 'Pass': False})
+
+    print(scientific_rep)
+    print(computational_rep)
+
+
+def main(base_loc, pub_loc):
     print("Creating result files")
     make_dirs(base_loc)
     print("Processing from config")
@@ -114,9 +158,7 @@ def main(base_loc, published_loc):
     sys_summ = system_summary()
     with open(base_loc + 'results/system.json', 'w') as file:
         json.dump(sys_summ, file)
-    # TODO: Compare new results with published final_results
-    # TODO: Scientific replication test (same results, different machine)
-    # TODO: Computational replication test (same results, same machine)
+    replicate(base_loc, pub_loc)
 
 
 if __name__ == "__main__":

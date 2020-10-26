@@ -1,0 +1,6 @@
+Method,Normalized Cross Correlation (NCC)
+ground_truth,1.0003185078038983
+cufft,0.673434490680419
+fftw,0.889682837025164
+numpy_fft,0.889682837025164
+numpy_pointwise,0.889682837025164

@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+from merklelib import MerkleTree
 
 from postProcessing.repetition_test import main as repeat
 from postProcessing.reproduce_test_1 import main as repro1
@@ -11,6 +12,7 @@ def system_summary():
     import psutil
     import GPUtil
     import platform
+    merkletree = MerkleTree()
     system_info = {}
     uname = platform.uname()
     system_info['system'] = {
@@ -38,7 +40,8 @@ def system_summary():
             'name': gpu.name,
             'memory': gpu.memoryTotal
         }
-    return system_info
+    merkletree.append([system_info[key] for key in system_info.keys()])
+    return system_info, merkletree.merkle_root
 
 
 def make_dirs(base):
@@ -92,7 +95,9 @@ def main(base_loc):
     print("Reproduction Analysis 2")
     repro2(base_loc + 'results/single/raw/clean/', base_loc + 'results/double/raw/clean/',
            base_loc + 'results/reproduce2')
-    print(system_summary())
+    sys_summ, signature = system_summary()
+    print(signature)
+    print(sys_summ)
 
 
 if __name__ == "__main__":

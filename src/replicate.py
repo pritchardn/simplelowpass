@@ -96,6 +96,7 @@ def process_direct(loc, results):
 
 
 def compare_files(f1, f2):
+    ret = True
     with open(f1, 'r') as file1:
         lines1 = file1.readlines()
     with open(f2, 'r') as file2:
@@ -106,8 +107,8 @@ def compare_files(f1, f2):
     for i in range(len(lines1)):
         if lines1[i] != lines2[i]:
             print(lines1[i] + " does not match " + lines2[i])
-            return False
-    return True
+            ret = False
+    return ret
 
 
 def replicate(base_loc, pub_loc):

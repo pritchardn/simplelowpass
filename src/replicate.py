@@ -1,14 +1,24 @@
+import csv
 import glob
 import json
 import os
 import sys
-import csv
 
 from merklelib import MerkleTree
 
 from postProcessing.repetition_test import main as repeat
 from postProcessing.reproduce_test_1 import main as repro1
 from postProcessing.reproduce_test_2 import main as repro2
+
+
+def find_loaded_modules():
+    loaded_mods = []
+    for name, module in sorted(sys.modules.items()):
+        if hasattr(module, '__version__'):
+            loaded_mods.append(name + " " + str(module.__version__))
+        else:
+            loaded_mods.append(name)
+    return loaded_mods
 
 
 def system_summary():
@@ -43,6 +53,7 @@ def system_summary():
             'name': gpu.name,
             'memory': gpu.memoryTotal
         }
+    system_info['modules'] = find_loaded_modules()
     merkletree.append([system_info[key] for key in system_info.keys()])
     system_info['signature'] = merkletree.merkle_root
     return system_info
@@ -135,7 +146,6 @@ def replicate(base_loc, pub_loc):
         else:
             writer.writerow({'Test': 'Scientific Replicate', 'Pass': False})
             writer.writerow({'Test': 'Computational Replicate', 'Pass': False})
-
     print(scientific_rep)
     print(computational_rep)
 

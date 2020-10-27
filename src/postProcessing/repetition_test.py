@@ -27,7 +27,7 @@ def main(dir_in, fout, fpure):
         fieldnames = ['Method', 'Normalized Cross Correlation (NCC)']
         writer = csv.DictWriter(csvf, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerow({fieldnames[0]: 'ground_truth', fieldnames[1]: gcorr[0]})
+        writer.writerow({fieldnames[0]: 'ground_truth', fieldnames[1]: round(gcorr[0], 15)})
         for method in methods:
             average = 0.0
             i = 0

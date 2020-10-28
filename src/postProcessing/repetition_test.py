@@ -16,6 +16,11 @@ def correlate(a, b):
     return np.absolute(np.correlate(a, b, mode='valid') / len(a))
 
 
+def find_output_formatter(a):
+    length = int(np.ceil(np.log10(len(a))))
+    return "{:." + str(length) + "f}"
+
+
 def main(dir_in, fout, fpure):
 
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
@@ -23,11 +28,12 @@ def main(dir_in, fout, fpure):
     ground_truth = normalize_signal(np.load(fpure))
     # Compute the normalized cross-correlation of itself (expecting 1)
     gcorr = correlate(ground_truth, ground_truth)
+    out_formatter = find_output_formatter(ground_truth)
     with open(fout + '.csv', 'w', newline='') as csvf:
         fieldnames = ['Method', 'Normalized Cross Correlation (NCC)']
         writer = csv.DictWriter(csvf, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerow({fieldnames[0]: 'ground_truth', fieldnames[1]: round(gcorr[0], 15)})
+        writer.writerow({fieldnames[0]: 'ground_truth', fieldnames[1]: out_formatter.format(gcorr[0])})
         for method in methods:
             average = 0.0
             i = 0
@@ -38,7 +44,7 @@ def main(dir_in, fout, fpure):
                 corr = correlate(filtered, ground_truth)
                 average += corr
                 i += 1
-            writer.writerow({fieldnames[0]: method, fieldnames[1]: round((average / i)[0], 15)})
+            writer.writerow({fieldnames[0]: method, fieldnames[1]: out_formatter.format((average / i)[0])})
 
 
 if __name__ == '__main__':

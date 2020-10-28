@@ -50,9 +50,10 @@ if __name__ == '__main__':
     signal = container['sig']
     window = container['win']
     name = str(container['name'])
-    filtered = pointwise_np(signal, window)
+    filtered = pointwise_np(signal, window, {'float': np.float64, 'complex': np.complex128})
     sns.set_theme()
     sns.set_context("paper")
+    sns.set(font_scale=1.4)
     sns.set_style("white")
     sns.color_palette("colorblind")
 

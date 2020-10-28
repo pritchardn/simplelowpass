@@ -1,6 +1,6 @@
 Test,Pass
-Repeat,False
-Reproduce 1,False
+Repeat,True
+Reproduce 1,True
 Reproduce 2,False
 Scientific Replicate,False
 Computational Replicate,False

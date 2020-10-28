@@ -15,7 +15,7 @@ def plot_signal(sig):
     ax.set(title='Input signal (440, 880, 1000, 2000) Hz',
            ylabel='Amplitude',
            xlabel='Time (samples)')
-    plt.savefig('signal.png')
+    plt.savefig('signal.png', dpi=300)
     plt.show()
 
 
@@ -27,7 +27,7 @@ def plot_window(win):
     ax.set(title='600 Hz Low-pass Filter Hann Window',
            ylabel='Amplitude',
            xlabel='Time (samples)')
-    plt.savefig('window.png')
+    plt.savefig('window.png', dpi=300)
     plt.show()
 
 
@@ -40,11 +40,14 @@ def plot_filtered(filtered):
     ax.set(title='Filtered signal',
            ylabel='Amplitude',
            xlabel='Time (samples)')
-    plt.savefig('filtered.png')
+    plt.savefig('filtered.png', dpi=300)
     plt.show()
 
 
 if __name__ == '__main__':
+    from matplotlib import rcParams
+
+    rcParams.update({'figure.autolayout': True})
     fname = sys.argv[1]
     container = np.load(fname)
     signal = container['sig']

@@ -10,7 +10,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib import rcParams
 
-from lowpass import pointwise_np
+from lowpass import filter_pointwise_np
 
 
 def plot_signal(signal):
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     SIGNAL = CONTAINER['sig']
     WINDOW = CONTAINER['win']
     NAME = str(CONTAINER['name'])
-    FILTERED = pointwise_np(SIGNAL, WINDOW, {'float': np.float64, 'complex': np.complex128})
+    FILTERED = filter_pointwise_np(SIGNAL, WINDOW, {'float': np.float64, 'complex': np.complex128})
     sns.set_theme()
     sns.set_context("paper")
     sns.set(font_scale=1.4)

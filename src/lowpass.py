@@ -1,28 +1,53 @@
+"""
+Defines all low-pass filtering functions.
+:param argv[1]: Whether to load the file directly (1) or not (else)
+:param argv[2]: Input file base path
+:param argv[3]: Output file base path
+:param argv[4]: Precision double (1), single (else)
+"""
 import json
 import sys
+import pyfftw
 
 import numpy as np
 
-precisions = {'double': {'float': np.float64, 'complex': np.complex128},
+PRECISIONS = {'double': {'float': np.float64, 'complex': np.complex128},
               'single': {'float': np.float32, 'complex': np.complex64}}
 
 
-def sinc(x: np.float64):
-    if np.isclose(x, 0.0):
+def sinc(x_val: np.float64):
+    """
+    Computes the sin_c value for the input float
+    :param x_val:
+    """
+    if np.isclose(x_val, 0.0):
         return 1.0
-    else:
-        return np.sin(np.pi * x) / (np.pi * x)
+    return np.sin(np.pi * x_val) / (np.pi * x_val)
 
 
 def gen_sig(freqs, length, sample_rate):
-    x = np.zeros(length, dtype=np.float64)
-    for f in freqs:
+    """
+    Generates a signal series composed of sine-waves.
+    :param freqs: The list of frequency values (Hz)
+    :param length: The length of the desired series
+    :param sample_rate: The sample rate for data points
+    :return: A numpy array signal series
+    """
+    series = np.zeros(length, dtype=np.float64)
+    for freq in freqs:
         for i in range(length):
-            x[i] += np.sin(2 * np.pi * i * f / sample_rate)
-    return x
+            series[i] += np.sin(2 * np.pi * i * freq / sample_rate)
+    return series
 
 
 def gen_window(length, cutoff, sample_rate):
+    """
+    Generates a filter-window sequence
+    :param length: The length of the desired window
+    :param cutoff: The cutoff frequency (Hz)
+    :param sample_rate: The sampling rate
+    :return: A numpy array window series
+    """
     alpha = 2 * cutoff / sample_rate
     win = np.zeros(length)
     for i in range(length):
@@ -33,6 +58,17 @@ def gen_window(length, cutoff, sample_rate):
 
 
 def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
+    """
+    A noise to the provided signal by producing random values of a given frequency
+    :param signal: The input (and output) numpy array signal series
+    :param mean: The average value
+    :param std: The standard deviation of the value
+    :param freq: The frequency of the noisy signal
+    :param sample_rate: The sample rate of the input series
+    :param seed: The random seed
+    :param alpha: The multiplier
+    :return: The input series with noisy values added
+    """
     np.random.seed(seed)
     samples = alpha * np.random.normal(mean, std, size=len(signal))
     for i in range(len(signal)):
@@ -42,10 +78,21 @@ def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
 
 
 def determine_size(length):
+    """
+    :param length:
+    :return: Computes the next largest power of two needed to contain |length| elements
+    """
     return int(2 ** np.ceil(np.log2(length))) - 1
 
 
-def fftea_time_np(signal: np.array, window: np.array, prec: dict):
+def filter_fft_np(signal: np.array, window: np.array, prec: dict):
+    """
+    Computes the low_pass filter using the numpy fft method
+    :param signal: The input series
+    :param window: The input window
+    :param prec: The precision entry
+    :return: The filtered signal
+    """
     nfft = determine_size(len(signal) + len(window) - 1)
     sig_zero_pad = np.zeros(nfft, dtype=prec['float'])
     win_zero_pad = np.zeros(nfft, dtype=prec['float'])
@@ -58,8 +105,14 @@ def fftea_time_np(signal: np.array, window: np.array, prec: dict):
     return out.astype(prec['complex'])
 
 
-def fftea_time_fftw(signal: np.array, window: np.array, prec: dict):
-    import pyfftw
+def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
+    """
+    Computes the low_pass filter using the fftw fft method
+    :param signal: The input series
+    :param window: The input window
+    :param prec: The precision entry
+    :return: The filtered signal
+    """
     nfft = determine_size(len(signal) + len(window) - 1)
     sig_zero_pad = pyfftw.empty_aligned(len(signal), dtype=prec['float'])
     win_zero_pad = pyfftw.empty_aligned(len(window), dtype=prec['float'])
@@ -72,8 +125,16 @@ def fftea_time_fftw(signal: np.array, window: np.array, prec: dict):
     return out.astype(prec['complex'])
 
 
-def fftea_time_cuda(signal: np.array, window: np.array, prec: dict):
-    import pycuda.autoinit
+def filter_fft_cuda(signal: np.array, window: np.array, prec: dict):
+    """
+    Computes the low_pass filter using the numpy pycuda method.
+    Also auto-inits the pycuda library
+    :param signal: The input series
+    :param window: The input window
+    :param prec: The precision entry
+    :return: The filtered signal
+    """
+    import pycuda.autoinit  # Here because it initialises a new cuda environment every trial.
     import pycuda.gpuarray as gpuarray
     import skcuda.fft as cu_fft
     import skcuda.linalg as linalg
@@ -110,17 +171,32 @@ def fftea_time_cuda(signal: np.array, window: np.array, prec: dict):
     return out_np
 
 
-def pointwise_np(signal: np.array, window: np.array, prec: dict):
+def filter_pointwise_np(signal: np.array, window: np.array, prec: dict):
+    """
+    Computes the low_pass filter using the numpy point-wise convolution method
+    :param signal: The input series
+    :param window: The input window
+    :param prec: The precision entry
+    :return: The filtered signal
+    """
     return np.convolve(signal, window, mode='full').astype(prec['complex'])
 
 
 def main(fname, dirout, direct, precision):
-    methods = {'numpy_fft': fftea_time_np, 'fftw': fftea_time_fftw, 'cufft': fftea_time_cuda,
-               'numpy_pointwise': pointwise_np}
+    """
+    Computes the low-pass filter response using each method implemented.
+    :param fname: The relative input file path
+    :param dirout: The relative base output file path
+    :param direct: A boolean whether to use raw data files (true) or config files (false)
+    :param precision: The numeric precision
+    :return: Saves the filtered signal to a numpy file.
+    """
+    methods = {'numpy_fft': filter_fft_np, 'fftw': filter_fft_fftw, 'cufft': filter_fft_cuda,
+               'numpy_pointwise': filter_pointwise_np}
     if precision == 1:
-        prec = precisions['double']
+        prec = PRECISIONS['double']
     else:
-        prec = precisions['single']
+        prec = PRECISIONS['single']
     for m_name, func in methods.items():
         if direct:
             container = np.load(fname)
@@ -132,14 +208,19 @@ def main(fname, dirout, direct, precision):
             else:
                 outname = dirout + 'clean/' + name + '_' + str(m_name) + '.out'
         else:
-            with open(fname, 'r') as fp:
-                config = json.load(fp)
+            with open(fname, 'r') as file:
+                config = json.load(file)
             sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
             win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
             outname = dirout + 'clean/' + config['name'] + '_' + str(m_name) + '.out'
             if 'noise' in config.keys():
-                sig = add_noise(sig, config['noise']['mean'], config['noise']['std'], config['noise']['frequency'],
-                                config['sampling_rate'], config['noise']['seed'], config['noise']['alpha'])
+                sig = add_noise(sig,
+                                config['noise']['mean'],
+                                config['noise']['std'],
+                                config['noise']['frequency'],
+                                config['sampling_rate'],
+                                config['noise']['seed'],
+                                config['noise']['alpha'])
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
         result = func(sig, win, prec)
@@ -148,16 +229,13 @@ def main(fname, dirout, direct, precision):
 
 
 if __name__ == "__main__":
-    file_name = sys.argv[2]
-    directory_out = sys.argv[3]
-    if int(sys.argv[1]) == 1:
-        load_direct = True
-    else:
-        load_direct = False
+    FILE_NAME = sys.argv[2]
+    DIRECTORY_OUT = sys.argv[3]
+    LOAD_DIRECT = bool(int(sys.argv[1]))
     if len(sys.argv) <= 4:
-        precision = precisions['double']  # default beahviour
+        PRECISION = PRECISIONS['double']  # default beahviour
     elif int(sys.argv[4]) == 1:
-        precision = precisions['double']
+        PRECISION = PRECISIONS['double']
     else:
-        precision = precisions['single']
-    main(file_name, directory_out, load_direct, precision)
+        PRECISION = PRECISIONS['single']
+    main(FILE_NAME, DIRECTORY_OUT, LOAD_DIRECT, PRECISION)

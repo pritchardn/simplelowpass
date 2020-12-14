@@ -8,69 +8,13 @@ import glob
 import json
 import os
 import sys
-import platform
-import psutil
-import GPUtil
-
-from merklelib import MerkleTree
 
 from lowpass import main as lowp
+from postProcessing.utils import system_summary
 from postProcessing.repetition_test import main as repeat
+from postProcessing.recompute_test import main as recompute
 from postProcessing.reproduce_test_1 import main as repro1
 from postProcessing.reproduce_test_2 import main as repro2
-
-
-def find_loaded_modules():
-    """
-    :return: A list of all loaded modules
-    """
-    loaded_mods = []
-    for name, module in sorted(sys.modules.items()):
-        if hasattr(module, '__version__'):
-            loaded_mods.append(name + " " + str(module.__version__))
-        else:
-            loaded_mods.append(name)
-    return loaded_mods
-
-
-def system_summary():
-    """
-    Summarises the system this function is run on.
-    Includes system, cpu, gpu and module details
-    :return: A dictionary of system details
-    """
-    merkletree = MerkleTree()
-    system_info = {}
-    uname = platform.uname()
-    system_info['system'] = {
-        'system': uname.system,
-        'release': uname.release,
-        'version': uname.version,
-        'machine': uname.machine,
-        'processor': uname.processor
-    }
-    cpu_freq = psutil.cpu_freq()
-    system_info['cpu'] = {
-        'cores_phys': psutil.cpu_count(logical=False),
-        'cores_logic': psutil.cpu_count(logical=True),
-        'max_frequency': cpu_freq.max,
-        'min_frequency': cpu_freq.min
-    }
-    sys_mem = psutil.virtual_memory()
-    system_info['memory'] = {
-        'total': sys_mem.total
-    }
-    gpus = GPUtil.getGPUs()
-    system_info['gpu'] = {}
-    for gpu in gpus:
-        system_info['gpu'][gpu.id] = {
-            'name': gpu.name,
-            'memory': gpu.memoryTotal
-        }
-    system_info['modules'] = find_loaded_modules()
-    merkletree.append([system_info[item] for item in system_info])
-    system_info['signature'] = merkletree.merkle_root
-    return system_info
 
 
 def make_dirs(base):
@@ -153,6 +97,7 @@ def replicate(base_loc, pub_loc):
     """
     scientific_rep = True
     computational_rep = True
+    total_rep = True
     with open(base_loc + 'results/replicate.csv', 'w') as csvf:
         fieldnames = ['Test', 'Pass']
         writer = csv.DictWriter(csvf, fieldnames=fieldnames)
@@ -162,7 +107,14 @@ def replicate(base_loc, pub_loc):
         else:
             writer.writerow({'Test': 'Repeat', 'Pass': False})
             scientific_rep = False
+            total_rep = False
             print("Repeat fails")
+        if compare_files(base_loc + 'results/recompute.csv', pub_loc + 'recompute.csv'):
+            writer.writerow({'Test': 'Recompute', 'Pass': True})
+        else:
+            writer.writerow({'Test': 'Recompute', 'Pass': False})
+            computational_rep = False
+            print('Recompute Fails')
         if compare_files(base_loc + 'results/reproduce1.csv', pub_loc + 'reproduce1.csv'):
             writer.writerow({'Test': 'Reproduce 1', 'Pass': True})
         else:
@@ -180,13 +132,16 @@ def replicate(base_loc, pub_loc):
             print("Machines differ")
         if scientific_rep:
             writer.writerow({'Test': 'Scientific Replicate', 'Pass': True})
-            if computational_rep:
-                writer.writerow({'Test': 'Computational Replicate', 'Pass': True})
-            else:
-                writer.writerow({'Test': 'Computational Replicate', 'Pass': False})
         else:
             writer.writerow({'Test': 'Scientific Replicate', 'Pass': False})
+        if computational_rep:
+            writer.writerow({'Test': 'Computational Replicate', 'Pass': True})
+        else:
             writer.writerow({'Test': 'Computational Replicate', 'Pass': False})
+        if total_rep:
+            writer.writerow({'Test': 'Total Replicate', 'Pass': True})
+        else:
+            writer.writerow({'Test': 'Total Replicate', 'Pass': False})
     print(scientific_rep)
     print(computational_rep)
 
@@ -212,6 +167,9 @@ def main(base_loc, pub_loc):
     print("Reproduction Analysis 2")
     repro2(base_loc + 'results/single/raw/clean/', base_loc + 'results/double/raw/clean/',
            base_loc + 'results/reproduce2')
+    print("Recompute Analysis")
+    recompute("process_direct('../data/', '../results/')",
+              base_loc + 'results/recompute', 'scratch.out', 5)
     sys_summ = system_summary()
     with open(base_loc + 'results/system.json', 'w') as file:
         json.dump(sys_summ, file)

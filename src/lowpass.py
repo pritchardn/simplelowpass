@@ -8,7 +8,6 @@ Defines all low-pass filtering functions.
 import json
 import sys
 import pyfftw
-
 import numpy as np
 
 PRECISIONS = {'double': {'float': np.float64, 'complex': np.complex128},
@@ -113,6 +112,7 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
     :param prec: The precision entry
     :return: The filtered signal
     """
+    pyfftw.interfaces.cache.disable()
     nfft = determine_size(len(signal) + len(window) - 1)
     sig_zero_pad = pyfftw.empty_aligned(len(signal), dtype=prec['float'])
     win_zero_pad = pyfftw.empty_aligned(len(window), dtype=prec['float'])

@@ -57,7 +57,6 @@ def system_summary():
     system_info['system'] = {
         'system': uname.system,
         'release': uname.release,
-        'version': uname.version,
         'machine': uname.machine,
         'processor': uname.processor
     }

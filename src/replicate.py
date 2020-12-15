@@ -127,9 +127,16 @@ def replicate(base_loc, pub_loc):
             writer.writerow({'Test': 'Reproduce 2', 'Pass': False})
             scientific_rep = False
             print("Reproduce 2 fails")
-        if not compare_files(base_loc + 'results/system.json', pub_loc + 'system.json'):
+        with open(base_loc + 'results/system.json') as f:
+            my_system = json.load(f)
+        with open(pub_loc + 'system.json') as f:
+            pub_system = json.load(f)
+        if my_system['signature'] != pub_system['signature']:
             computational_rep = False
             print("Machines differ")
+        if len(my_system['gpu']) != len(pub_system['gpu']):
+            total_rep = False
+            print("GPU capabilities differ")
         if scientific_rep:
             writer.writerow({'Test': 'Scientific Replicate', 'Pass': True})
         else:
@@ -144,6 +151,7 @@ def replicate(base_loc, pub_loc):
             writer.writerow({'Test': 'Total Replicate', 'Pass': False})
     print(scientific_rep)
     print(computational_rep)
+    print(total_rep)
 
 
 def main(base_loc, pub_loc):
@@ -172,7 +180,7 @@ def main(base_loc, pub_loc):
               base_loc + 'results/recompute', 'scratch.out', 5)
     sys_summ = system_summary()
     with open(base_loc + 'results/system.json', 'w') as file:
-        json.dump(sys_summ, file)
+        json.dump(sys_summ, file, indent=2)
     replicate(base_loc, pub_loc)
 
 

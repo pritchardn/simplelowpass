@@ -134,7 +134,7 @@ def replicate(base_loc, pub_loc):
         if my_system['signature'] != pub_system['signature']:
             computational_rep = False
             print("Machines differ")
-        if len(my_system['gpu']) != len(pub_system['gpu']):
+        if len(my_system['gpu']) == 0:  # We only care if there are no GPUs
             total_rep = False
             print("GPU capabilities differ")
         if scientific_rep:

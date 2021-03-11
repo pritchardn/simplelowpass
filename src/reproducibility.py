@@ -86,7 +86,7 @@ def generate_memory_reprodata(data, inports, outports):
         'numOutputPorts': outports,
         'streaming': False,
     }, 'lg_data': {
-        'data_volume': 5,
+        'data_volume': '5',
     }, 'pgt_data': {
         'type': 'plain',
         'storage': 'Memory',
@@ -112,7 +112,7 @@ def generate_file_reprodata(data, filename, inports, outports):
         'numOutputPorts': outports,
         'streaming': False,
     }, 'lg_data': {
-        'data_volume': 5,
+        'data_volume': '5',
         'check_filepath_exists': '0',
         'filepath': filename,
         'dirname': '',
@@ -175,7 +175,7 @@ def filter_component_reprodata(component: dict, rmode: ReproducibilityFlags):
     component['pg_data']['merkleroot'] = pg_root
 
     # RG_Merkleroot
-    if component['pgt_data']['type'] == 'plain':
+    if component['pgt_data']['type'] == 'plain' and rmode.value <= ReproducibilityFlags.RECOMPUTE.value:
         component['rg_data'].pop('data_hash')
     rg_root = MerkleTree(component['rg_data'].items(), common_hash).merkle_root
     component['rg_data']['merkleroot'] = rg_root
@@ -221,14 +221,11 @@ def chain_parents(component: dict, parents: list):
     build_block(component, parents, block_data, 'rg')
 
 
-def generate_reprodata():
-    reprodata = {}
-    # TODO: Dynamic rmode value
-    reprodata['rmode'] = str(ReproducibilityFlags.RERUN.value)
-    reprodata['meta_data'] = {
+def generate_reprodata(rmode: ReproducibilityFlags):
+    reprodata = {'rmode': str(rmode.value), 'meta_data': {
         'repro_protocol': 0.1,
         'hashing_alg': "_sha3.sha3_256"
-    }
+    }}
     merke_tree = MerkleTree(reprodata.items(), common_hash)
     reprodata['merkleroot'] = merke_tree.merkle_root
     return reprodata

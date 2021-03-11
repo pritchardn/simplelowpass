@@ -10,7 +10,7 @@ import sys
 import pyfftw
 import numpy as np
 from reproducibility import filter_component_reprodata, generate_memory_reprodata, generate_file_reprodata, \
-    ReproducibilityFlags, chain_parents, generate_reprodata, agglomerate_leaves
+    ReproducibilityFlags, chain_parents, generate_reprodata, agglomerate_leaves, rflag_caster
 
 PRECISIONS = {'double': {'float': np.float64, 'complex': np.complex128},
               'single': {'float': np.float32, 'complex': np.complex64}}
@@ -26,7 +26,7 @@ def sinc(x_val: np.float64):
     return np.sin(np.pi * x_val) / (np.pi * x_val)
 
 
-def gen_sig(freqs, length, sample_rate):
+def gen_sig(freqs, length, sample_rate, rmode):
     """
     Generates a signal series composed of sine-waves.
     :param freqs: The list of frequency values (Hz)
@@ -62,10 +62,10 @@ def gen_sig(freqs, length, sample_rate):
         'status': 2
     }}
 
-    return series, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return series, filter_component_reprodata(rout, rmode)
 
 
-def gen_window(length, cutoff, sample_rate):
+def gen_window(length, cutoff, sample_rate, rmode):
     """
     Generates a filter-window sequence
     :param length: The length of the desired window
@@ -103,7 +103,7 @@ def gen_window(length, cutoff, sample_rate):
         'status': 2
     }}
 
-    return win, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return win, filter_component_reprodata(rout, rmode)
 
 
 def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
@@ -134,7 +134,7 @@ def determine_size(length):
     return int(2 ** np.ceil(np.log2(length))) - 1
 
 
-def filter_fft_np(signal: np.array, window: np.array, prec: dict):
+def filter_fft_np(signal: np.array, window: np.array, prec: dict, rmode):
     """
     Computes the low_pass filter using the numpy fft method
     :param signal: The input series
@@ -175,10 +175,10 @@ def filter_fft_np(signal: np.array, window: np.array, prec: dict):
         'status': 2
     }}
 
-    return out.astype(prec['complex']), filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return out.astype(prec['complex']), filter_component_reprodata(rout, rmode)
 
 
-def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
+def filter_fft_fftw(signal: np.array, window: np.array, prec: dict, rmode):
     """
     Computes the low_pass filter using the fftw fft method
     :param signal: The input series
@@ -220,10 +220,10 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
         'status': 2
     }}
 
-    return out.astype(prec['complex']), filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return out.astype(prec['complex']), filter_component_reprodata(rout, rmode)
 
 
-def filter_fft_cuda(signal: np.array, window: np.array, prec: dict):
+def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
     """
     Computes the low_pass filter using the numpy pycuda method.
     Also auto-inits the pycuda library
@@ -290,10 +290,10 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict):
         'status': 2
     }}
 
-    return out_np, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return out_np, filter_component_reprodata(rout, rmode)
 
 
-def filter_pointwise_np(signal: np.array, window: np.array, prec: dict):
+def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
     """
     Computes the low_pass filter using the numpy point-wise convolution method
     :param signal: The input series
@@ -325,10 +325,10 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict):
         'status': 2
     }}
 
-    return out_data, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
+    return out_data, filter_component_reprodata(rout, rmode)
 
 
-def main(fname, dirout, direct, precision):
+def main(fname, dirout, direct, precision, rmode):
     """
     Computes the low-pass filter response using each method implemented.
     :param fname: The relative input file path
@@ -338,7 +338,7 @@ def main(fname, dirout, direct, precision):
     :return: Saves the filtered signal to a numpy file.
     TODO: Use reprodata
     """
-    start_component = filter_component_reprodata(generate_memory_reprodata(b"", 0, 1), ReproducibilityFlags.RERUN)
+    start_component = filter_component_reprodata(generate_memory_reprodata(b"", 0, 1), rmode)
     methods = {'numpy_fft': filter_fft_np, 'fftw': filter_fft_fftw, 'cufft': filter_fft_cuda,
                'numpy_pointwise': filter_pointwise_np}
     if precision == 1:
@@ -358,10 +358,10 @@ def main(fname, dirout, direct, precision):
         else:
             with open(fname, 'r') as file:
                 config = json.load(file)
-            sig, sig_reprodata = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
-            win, win_reprodata = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
-            signal_reprodata = filter_component_reprodata(generate_memory_reprodata(sig, 1, 1), ReproducibilityFlags.RERUN)
-            window_reprodata = filter_component_reprodata(generate_memory_reprodata(win, 1, 1), ReproducibilityFlags.RERUN)
+            sig, sig_reprodata = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'], rmode)
+            win, win_reprodata = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'], rmode)
+            signal_reprodata = filter_component_reprodata(generate_memory_reprodata(sig, 1, 1), rmode)
+            window_reprodata = filter_component_reprodata(generate_memory_reprodata(win, 1, 1), rmode)
             outname = dirout + 'clean/' + config['name'] + '_' + str(m_name) + '.out'
             if 'noise' in config.keys():
                 sig = add_noise(sig,
@@ -373,9 +373,9 @@ def main(fname, dirout, direct, precision):
                                 config['noise']['alpha'])
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
-        result, result_reprodata = func(sig, win, prec)
+        result, result_reprodata = func(sig, win, prec, rmode)
         outfile_reprodata = filter_component_reprodata(generate_file_reprodata(result, outname, 1, 0),
-                                                       ReproducibilityFlags.RERUN)
+                                                       rmode)
         print("Saving to " + outname)
         np.save(outname, result)
         chain_parents(start_component, [])
@@ -386,7 +386,7 @@ def main(fname, dirout, direct, precision):
         chain_parents(result_reprodata, [signal_reprodata, window_reprodata])
         chain_parents(outfile_reprodata, [result_reprodata])
         reprodata = {}
-        reprodata['reprodata'] = generate_reprodata()
+        reprodata['reprodata'] = generate_reprodata(rmode)
         reprodata['start_component'] = start_component
         reprodata['signal_component_reprodata'] = sig_reprodata
         reprodata['window_component_reprodata'] = win_reprodata
@@ -403,10 +403,9 @@ if __name__ == "__main__":
     FILE_NAME = sys.argv[2]
     DIRECTORY_OUT = sys.argv[3]
     LOAD_DIRECT = bool(int(sys.argv[1]))
-    if len(sys.argv) <= 4:
-        PRECISION = PRECISIONS['double']  # default beahviour
-    elif int(sys.argv[4]) == 1:
-        PRECISION = PRECISIONS['double']
-    else:
+    if int(sys.argv[4]) == 1:
         PRECISION = PRECISIONS['single']
-    main(FILE_NAME, DIRECTORY_OUT, LOAD_DIRECT, PRECISION)
+    else:
+        PRECISION = PRECISIONS['double']
+    RMODE = rflag_caster(int(sys.argv[5]))
+    main(FILE_NAME, DIRECTORY_OUT, LOAD_DIRECT, PRECISION, RMODE)

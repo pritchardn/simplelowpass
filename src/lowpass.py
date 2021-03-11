@@ -9,6 +9,8 @@ import json
 import sys
 import pyfftw
 import numpy as np
+from reproducibility import filter_component_reprodata, generate_memory_reprodata, generate_file_reprodata, \
+    ReproducibilityFlags, chain_parents, generate_reprodata, agglomerate_leaves
 
 PRECISIONS = {'double': {'float': np.float64, 'complex': np.complex128},
               'single': {'float': np.float32, 'complex': np.complex64}}
@@ -36,7 +38,31 @@ def gen_sig(freqs, length, sample_rate):
     for freq in freqs:
         for i in range(length):
             series[i] += np.sin(2 * np.pi * i * freq / sample_rate)
-    return series
+
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 1,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.gen_sig"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return series, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def gen_window(length, cutoff, sample_rate):
@@ -53,7 +79,31 @@ def gen_window(length, cutoff, sample_rate):
         ham = 0.54 - 0.46 * np.cos(2 * np.pi * i / length)  # Hamming coefficient
         hsupp = (i - length / 2)
         win[i] = ham * alpha * sinc(alpha * hsupp)
-    return win
+
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 1,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.gen_window"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return win, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
@@ -101,7 +151,31 @@ def filter_fft_np(signal: np.array, window: np.array, prec: dict):
     win_fft = np.fft.fft(win_zero_pad)
     out_fft = np.multiply(sig_fft, win_fft)
     out = np.fft.ifft(out_fft)
-    return out.astype(prec['complex'])
+
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 2,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.filter_fft_np"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return out.astype(prec['complex']), filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
@@ -122,7 +196,31 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict):
     win_fft = pyfftw.interfaces.numpy_fft.fft(win_zero_pad, n=nfft)
     out_fft = np.multiply(sig_fft, win_fft)
     out = pyfftw.interfaces.numpy_fft.ifft(out_fft, n=nfft)
-    return out.astype(prec['complex'])
+
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 2,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.filter_fft_fftw"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return out.astype(prec['complex']), filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def filter_fft_cuda(signal: np.array, window: np.array, prec: dict):
@@ -168,7 +266,31 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict):
     cu_fft.ifft(out_fft, out_gpu, plan_inverse, True)
     out_np = np.zeros(len(out_gpu), prec['complex'])
     out_gpu.get(out_np)
-    return out_np
+
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 2,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.filter_fft_cuda"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return out_np, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def filter_pointwise_np(signal: np.array, window: np.array, prec: dict):
@@ -179,7 +301,31 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict):
     :param prec: The precision entry
     :return: The filtered signal
     """
-    return np.convolve(signal, window, mode='full').astype(prec['complex'])
+    out_data = np.convolve(signal, window, mode='full').astype(prec['complex'])
+    rout = {'lgt_data': {
+        'category_type': "Application",
+        'category': "Component",
+        'numInputPorts': 2,
+        'numOutputPorts': 1,
+        'streaming': False,
+    }, 'lg_data': {
+        'execution_time': 5,
+        'num_cpus': 1,
+        'appclass': "simplelowpass.lowpass.filter_pointwise_np"
+    }, 'pgt_data': {
+        'type': 'app',
+        'dt': 'Component',
+        'rank': [0],
+        'node': "0",
+        'island': "0"
+    }, 'pg_data': {
+        'node': '127.0.0.1',
+        'island': '127.0.0.1'
+    }, 'rg_data': {
+        'status': 2
+    }}
+
+    return out_data, filter_component_reprodata(rout, ReproducibilityFlags.RERUN)
 
 
 def main(fname, dirout, direct, precision):
@@ -190,7 +336,9 @@ def main(fname, dirout, direct, precision):
     :param direct: A boolean whether to use raw data files (true) or config files (false)
     :param precision: The numeric precision
     :return: Saves the filtered signal to a numpy file.
+    TODO: Use reprodata
     """
+    start_component = filter_component_reprodata(generate_memory_reprodata(b"", 0, 1), ReproducibilityFlags.RERUN)
     methods = {'numpy_fft': filter_fft_np, 'fftw': filter_fft_fftw, 'cufft': filter_fft_cuda,
                'numpy_pointwise': filter_pointwise_np}
     if precision == 1:
@@ -210,8 +358,10 @@ def main(fname, dirout, direct, precision):
         else:
             with open(fname, 'r') as file:
                 config = json.load(file)
-            sig = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
-            win = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+            sig, sig_reprodata = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'])
+            win, win_reprodata = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'])
+            signal_reprodata = filter_component_reprodata(generate_memory_reprodata(sig, 1, 1), ReproducibilityFlags.RERUN)
+            window_reprodata = filter_component_reprodata(generate_memory_reprodata(win, 1, 1), ReproducibilityFlags.RERUN)
             outname = dirout + 'clean/' + config['name'] + '_' + str(m_name) + '.out'
             if 'noise' in config.keys():
                 sig = add_noise(sig,
@@ -223,9 +373,30 @@ def main(fname, dirout, direct, precision):
                                 config['noise']['alpha'])
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
-        result = func(sig, win, prec)
+        result, result_reprodata = func(sig, win, prec)
+        outfile_reprodata = filter_component_reprodata(generate_file_reprodata(result, outname, 1, 0),
+                                                       ReproducibilityFlags.RERUN)
         print("Saving to " + outname)
         np.save(outname, result)
+        chain_parents(start_component, [])
+        chain_parents(sig_reprodata, [start_component])
+        chain_parents(win_reprodata, [start_component])
+        chain_parents(signal_reprodata, [sig_reprodata])
+        chain_parents(window_reprodata, [win_reprodata])
+        chain_parents(result_reprodata, [signal_reprodata, window_reprodata])
+        chain_parents(outfile_reprodata, [result_reprodata])
+        reprodata = {}
+        reprodata['reprodata'] = generate_reprodata()
+        reprodata['start_component'] = start_component
+        reprodata['signal_component_reprodata'] = sig_reprodata
+        reprodata['window_component_reprodata'] = win_reprodata
+        reprodata['signal_data_reprodata'] = signal_reprodata
+        reprodata['window_data_reprodata'] = window_reprodata
+        reprodata['filter_component_reprodata'] = result_reprodata
+        reprodata['result_data_reprodata'] = outfile_reprodata
+        reprodata['signature'] = agglomerate_leaves([outfile_reprodata['rg_blockhash']])
+        with open(outname + '.json', 'w') as f:
+            json.dump(reprodata, f, indent=2)
 
 
 if __name__ == "__main__":

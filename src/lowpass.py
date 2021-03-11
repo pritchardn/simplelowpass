@@ -328,7 +328,7 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
     return out_data, filter_component_reprodata(rout, rmode)
 
 
-def main(fname, dirout, direct, precision, rmode):
+def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
     """
     Computes the low-pass filter response using each method implemented.
     :param fname: The relative input file path

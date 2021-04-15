@@ -11,6 +11,7 @@ import sys
 
 from lowpass import main as lowp
 from postProcessing.utils import system_summary
+from postProcessing.rerun_test import main as rerun
 from postProcessing.repetition_test import main as repeat
 from postProcessing.recompute_test import main as recompute
 from postProcessing.reproduce_test_1 import main as repro1
@@ -167,6 +168,8 @@ def main(base_loc, pub_loc):
     process_conf(base_loc + 'data/', base_loc + 'results/')
     print("Processing from direct files")
     process_direct(base_loc + 'data/', base_loc + 'results/')
+    print("Rerun Analysis")
+    rerun(base_loc + 'results/double/config/clean/', base_loc + 'results/rerun')
     print("Repetition Analysis")
     repeat(base_loc + 'results/double/raw/clean/', base_loc + "results/repeat",
            base_loc + 'results/double/raw/clean/3_numpy_pointwise.out.npy')

@@ -5,10 +5,13 @@ Defines all low-pass filtering functions.
 :param argv[3]: Output file base path
 :param argv[4]: Precision double (1), single (else)
 """
+import copy
 import json
 import sys
-import pyfftw
+
 import numpy as np
+import pyfftw
+
 from reproducibility import filter_component_reprodata, generate_memory_reprodata, generate_file_reprodata, \
     ReproducibilityFlags, chain_parents, generate_reprodata, agglomerate_leaves, rflag_caster
 
@@ -62,7 +65,7 @@ def gen_sig(freqs, length, sample_rate, rmode):
         'status': 2
     }}
 
-    return series, filter_component_reprodata(rout, rmode)
+    return series, rout
 
 
 def gen_window(length, cutoff, sample_rate, rmode):
@@ -103,7 +106,7 @@ def gen_window(length, cutoff, sample_rate, rmode):
         'status': 2
     }}
 
-    return win, filter_component_reprodata(rout, rmode)
+    return win, rout
 
 
 def add_noise(signal: np.array, mean, std, freq, sample_rate, seed, alpha=0.1):
@@ -175,7 +178,7 @@ def filter_fft_np(signal: np.array, window: np.array, prec: dict, rmode):
         'status': 2
     }}
 
-    return out.astype(prec['complex']), filter_component_reprodata(rout, rmode)
+    return out.astype(prec['complex']), rout
 
 
 def filter_fft_fftw(signal: np.array, window: np.array, prec: dict, rmode):
@@ -220,7 +223,7 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict, rmode):
         'status': 2
     }}
 
-    return out.astype(prec['complex']), filter_component_reprodata(rout, rmode)
+    return out.astype(prec['complex']), rout
 
 
 def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
@@ -290,7 +293,7 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
         'status': 2
     }}
 
-    return out_np, filter_component_reprodata(rout, rmode)
+    return out_np, rout
 
 
 def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
@@ -325,7 +328,57 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
         'status': 2
     }}
 
-    return out_data, filter_component_reprodata(rout, rmode)
+    return out_data, rout
+
+
+def build_BlocDAGs(direct, sig_reprodata, win_reprodata, signal_reprodata, window_reprodata, result_reprodata,
+                   outfile_reprodata):
+    out_dict = {}
+    start_component = generate_memory_reprodata(b"", 0, 1)
+    for rmode in [ReproducibilityFlags.RERUN, ReproducibilityFlags.REPEAT, ReproducibilityFlags.RECOMPUTE,
+                  ReproducibilityFlags.REPRODUCE, ReproducibilityFlags.REPLICATE_SCI,
+                  ReproducibilityFlags.REPLICATE_COMP,
+                  ReproducibilityFlags.REPLICATE_TOTAL]:
+        start = copy.deepcopy(start_component)
+        signal = copy.deepcopy(signal_reprodata)
+        window = copy.deepcopy(window_reprodata)
+        result = copy.deepcopy(result_reprodata)
+        outfile = copy.deepcopy(outfile_reprodata)
+        filter_component_reprodata(start, rmode)
+        filter_component_reprodata(signal, rmode)
+        filter_component_reprodata(window, rmode)
+        filter_component_reprodata(result, rmode)
+        filter_component_reprodata(outfile, rmode)
+        chain_parents(start, [])
+        if direct:
+            sig = None
+            win = None
+            chain_parents(signal, [start])
+            chain_parents(window, [start])
+        else:
+            sig = copy.deepcopy(sig_reprodata)
+            win = copy.deepcopy(win_reprodata)
+            filter_component_reprodata(sig, rmode)
+            filter_component_reprodata(win, rmode)
+            chain_parents(sig, [start])
+            chain_parents(win, [start])
+            chain_parents(signal, [sig])
+            chain_parents(window, [win])
+        chain_parents(result, [signal, window])
+        chain_parents(outfile, [result])
+        if direct:
+            repro = {'reprodata': generate_reprodata(rmode), 'start_component': start,
+                     'signal_data_reprodata': signal, 'window_data_reprodata': window,
+                     'filter_reprodata': result, 'result_data_reprodata': outfile,
+                     'signature': agglomerate_leaves([outfile['rg_blockhash']])}
+        else:
+            repro = {'reprodata': generate_reprodata(rmode), 'start_component': start,
+                     'signal_component_reprodata': sig, 'window_component_reprodata': win,
+                     'signal_data_reprodata': signal, 'window_data_reprodata': window,
+                     'filter_reprodata': result, 'result_data_reprodata': outfile,
+                     'signature': agglomerate_leaves([outfile['rg_blockhash']])}
+        out_dict[rmode.value] = copy.deepcopy(repro)
+    return out_dict
 
 
 def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
@@ -338,7 +391,8 @@ def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
     :return: Saves the filtered signal to a numpy file.
     TODO: Use reprodata
     """
-    start_component = filter_component_reprodata(generate_memory_reprodata(b"", 0, 1), rmode)
+    sig_reprodata = None
+    win_reprodata = None
     methods = {'numpy_fft': filter_fft_np, 'fftw': filter_fft_fftw, 'cufft': filter_fft_cuda,
                'numpy_pointwise': filter_pointwise_np}
     if precision == 1:
@@ -350,6 +404,8 @@ def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
             container = np.load(fname)
             sig = container['sig']
             win = container['win']
+            signal_reprodata = generate_memory_reprodata(sig, 1, 1)
+            window_reprodata = generate_memory_reprodata(win, 1, 1)
             name = str(container['name'])
             if 'noise' in container.keys():
                 outname = dirout + 'noisy/' + name + '_' + str(m_name) + '.out'
@@ -360,8 +416,8 @@ def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
                 config = json.load(file)
             sig, sig_reprodata = gen_sig(config['frequencies'], config['sig_len'], config['sampling_rate'], rmode)
             win, win_reprodata = gen_window(config['win_len'], config['cutoff_freq'], config['sampling_rate'], rmode)
-            signal_reprodata = filter_component_reprodata(generate_memory_reprodata(sig, 1, 1), rmode)
-            window_reprodata = filter_component_reprodata(generate_memory_reprodata(win, 1, 1), rmode)
+            signal_reprodata = generate_memory_reprodata(sig, 1, 1)
+            window_reprodata = generate_memory_reprodata(win, 1, 1)
             outname = dirout + 'clean/' + config['name'] + '_' + str(m_name) + '.out'
             if 'noise' in config.keys():
                 sig = add_noise(sig,
@@ -374,29 +430,14 @@ def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
         result, result_reprodata = func(sig, win, prec, rmode)
-        outfile_reprodata = filter_component_reprodata(generate_file_reprodata(result, outname, 1, 0),
-                                                       rmode)
+        outfile_reprodata = generate_file_reprodata(result, outname, 1, 0)
         print("Saving to " + outname)
         np.save(outname, result)
-        chain_parents(start_component, [])
-        chain_parents(sig_reprodata, [start_component])
-        chain_parents(win_reprodata, [start_component])
-        chain_parents(signal_reprodata, [sig_reprodata])
-        chain_parents(window_reprodata, [win_reprodata])
-        chain_parents(result_reprodata, [signal_reprodata, window_reprodata])
-        chain_parents(outfile_reprodata, [result_reprodata])
-        reprodata = {}
-        reprodata['reprodata'] = generate_reprodata(rmode)
-        reprodata['start_component'] = start_component
-        reprodata['signal_component_reprodata'] = sig_reprodata
-        reprodata['window_component_reprodata'] = win_reprodata
-        reprodata['signal_data_reprodata'] = signal_reprodata
-        reprodata['window_data_reprodata'] = window_reprodata
-        reprodata['filter_component_reprodata'] = result_reprodata
-        reprodata['result_data_reprodata'] = outfile_reprodata
-        reprodata['signature'] = agglomerate_leaves([outfile_reprodata['rg_blockhash']])
-        with open(outname + '.json', 'w') as f:
-            json.dump(reprodata, f, indent=2)
+        reprodata = build_BlocDAGs(direct, sig_reprodata, win_reprodata, signal_reprodata, window_reprodata,
+                                   result_reprodata, outfile_reprodata)
+        for rmode, rdata in reprodata.items():
+            with open(outname + "_" + str(rmode) + '.json', 'w') as f:
+                json.dump(rdata, f, indent=2)
 
 
 if __name__ == "__main__":

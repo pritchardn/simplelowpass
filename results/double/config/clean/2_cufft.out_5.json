@@ -1,0 +1,271 @@
+{
+  "reprodata": {
+    "rmode": "5",
+    "meta_data": {
+      "repro_protocol": 0.1,
+      "hashing_alg": "_sha3.sha3_256"
+    },
+    "merkleroot": "2eb352b9825da03c857feb3066428c05b20b98b72e25ff76e1d0726469842e88"
+  },
+  "start_component": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "merkleroot": "a2ed42cce3ec23bc80d6b203446bd6ef5004da39cd51b4263aa9669221345510"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "data_hash": "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a",
+      "merkleroot": "7b4caf9722e4f196cfcc8a61f0f41155125af603a995b0ea4df1b6de49d62222"
+    },
+    "lg_parenthashes": {},
+    "lg_blockhash": "a8c822b3d20608287c4c2e92025c49f07335ce1942294f5b331103e187e8e497",
+    "pgt_parenthashes": {},
+    "pgt_blockhash": "c1b59e46aadfb05936c7fe360c21a36777de6ba3ec1b4d927df5459cb6b49b27",
+    "pg_parenthashes": {},
+    "pg_blockhash": "1ed82e658c19090104bcfb99a646c3f8b5aee71f52a2d6913c8f25db491084d4",
+    "rg_parenthashes": {},
+    "rg_blockhash": "0d3d1f9673c886532adc3da40d404f8a9f5ccdba217465f81ea4fbc05ed0e0f8"
+  },
+  "signal_component_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "merkleroot": "68e0d2c701686d280313ed87927cccdd74327de357e230762ef21b39f30d8ad6"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "app",
+      "merkleroot": "5b0d1fa0e7d7f915ecf6612866a2376c05d2aa92675ce6b0c1c07209f67b9543"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "merkleroot": null
+    },
+    "lg_parenthashes": {
+      "0": "a8c822b3d20608287c4c2e92025c49f07335ce1942294f5b331103e187e8e497"
+    },
+    "lg_blockhash": "ca30533c5727360005a8e8ad077ecd7e8576465267728f827ed4d13b23283823",
+    "pgt_parenthashes": {
+      "0": "c1b59e46aadfb05936c7fe360c21a36777de6ba3ec1b4d927df5459cb6b49b27"
+    },
+    "pgt_blockhash": "e61b3350e527c8118e8373e844598b070b1317af285561c6f4d27e0473b16044",
+    "pg_parenthashes": {
+      "0": "1ed82e658c19090104bcfb99a646c3f8b5aee71f52a2d6913c8f25db491084d4"
+    },
+    "pg_blockhash": "d0e815bff2d9cac6533a399e8c35e44556c9c48d725b6f157f5c42805a513132",
+    "rg_parenthashes": {
+      "0": "0d3d1f9673c886532adc3da40d404f8a9f5ccdba217465f81ea4fbc05ed0e0f8"
+    },
+    "rg_blockhash": "5e42c52922ff594e2c6d7c571f4f91c7490f3efbf159092a16626528e640dc37"
+  },
+  "window_component_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "merkleroot": "68e0d2c701686d280313ed87927cccdd74327de357e230762ef21b39f30d8ad6"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "app",
+      "merkleroot": "5b0d1fa0e7d7f915ecf6612866a2376c05d2aa92675ce6b0c1c07209f67b9543"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "merkleroot": null
+    },
+    "lg_parenthashes": {
+      "0": "a8c822b3d20608287c4c2e92025c49f07335ce1942294f5b331103e187e8e497"
+    },
+    "lg_blockhash": "ca30533c5727360005a8e8ad077ecd7e8576465267728f827ed4d13b23283823",
+    "pgt_parenthashes": {
+      "0": "c1b59e46aadfb05936c7fe360c21a36777de6ba3ec1b4d927df5459cb6b49b27"
+    },
+    "pgt_blockhash": "e61b3350e527c8118e8373e844598b070b1317af285561c6f4d27e0473b16044",
+    "pg_parenthashes": {
+      "0": "1ed82e658c19090104bcfb99a646c3f8b5aee71f52a2d6913c8f25db491084d4"
+    },
+    "pg_blockhash": "d0e815bff2d9cac6533a399e8c35e44556c9c48d725b6f157f5c42805a513132",
+    "rg_parenthashes": {
+      "0": "0d3d1f9673c886532adc3da40d404f8a9f5ccdba217465f81ea4fbc05ed0e0f8"
+    },
+    "rg_blockhash": "5e42c52922ff594e2c6d7c571f4f91c7490f3efbf159092a16626528e640dc37"
+  },
+  "signal_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "merkleroot": "a2ed42cce3ec23bc80d6b203446bd6ef5004da39cd51b4263aa9669221345510"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "data_hash": "b4d6ac7cc6b4bbe1d9c4b50aef6d7defd98bfd66b9e87b1f567e230fb3f47202",
+      "merkleroot": "0c35d5835231ce7fd9cfdff8ac774d9509f542bd960f5f44e9dfda2e290db56a"
+    },
+    "lg_parenthashes": {
+      "0": "a8c822b3d20608287c4c2e92025c49f07335ce1942294f5b331103e187e8e497"
+    },
+    "lg_blockhash": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e",
+    "pgt_parenthashes": {
+      "0": "c1b59e46aadfb05936c7fe360c21a36777de6ba3ec1b4d927df5459cb6b49b27"
+    },
+    "pgt_blockhash": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638",
+    "pg_parenthashes": {
+      "0": "1ed82e658c19090104bcfb99a646c3f8b5aee71f52a2d6913c8f25db491084d4"
+    },
+    "pg_blockhash": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab",
+    "rg_parenthashes": {
+      "0": "0d3d1f9673c886532adc3da40d404f8a9f5ccdba217465f81ea4fbc05ed0e0f8"
+    },
+    "rg_blockhash": "b2b43eea10d290ad621b8f4efb33a5ff38145b2b07cfaa5279446be3b277aa1b"
+  },
+  "window_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "merkleroot": "a2ed42cce3ec23bc80d6b203446bd6ef5004da39cd51b4263aa9669221345510"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "data_hash": "f1c5c4b07348dc0388eaf952b3aa8a0da9a0e2b7de7a7ac0b9fc9d533636907c",
+      "merkleroot": "8abe9e52b17e968fae42e67e8c160536a3e2fb270858b583227192961939faca"
+    },
+    "lg_parenthashes": {
+      "0": "a8c822b3d20608287c4c2e92025c49f07335ce1942294f5b331103e187e8e497"
+    },
+    "lg_blockhash": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e",
+    "pgt_parenthashes": {
+      "0": "c1b59e46aadfb05936c7fe360c21a36777de6ba3ec1b4d927df5459cb6b49b27"
+    },
+    "pgt_blockhash": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638",
+    "pg_parenthashes": {
+      "0": "1ed82e658c19090104bcfb99a646c3f8b5aee71f52a2d6913c8f25db491084d4"
+    },
+    "pg_blockhash": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab",
+    "rg_parenthashes": {
+      "0": "0d3d1f9673c886532adc3da40d404f8a9f5ccdba217465f81ea4fbc05ed0e0f8"
+    },
+    "rg_blockhash": "ee43163c38f0bf91af4e325e3fd1e0b6d769b240b4f22441d772393e080f8a87"
+  },
+  "filter_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "merkleroot": "68e0d2c701686d280313ed87927cccdd74327de357e230762ef21b39f30d8ad6"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "app",
+      "merkleroot": "5b0d1fa0e7d7f915ecf6612866a2376c05d2aa92675ce6b0c1c07209f67b9543"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "merkleroot": null
+    },
+    "lg_parenthashes": {
+      "0": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e",
+      "1": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e"
+    },
+    "lg_blockhash": "12a0e24761866ee43243a2c409b46582c7402ee38c9225d91b3262f3bcd6d4a8",
+    "pgt_parenthashes": {
+      "0": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638",
+      "1": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638"
+    },
+    "pgt_blockhash": "0391bc806c314bc728103b8ab70410ac58d3488b75110719980d27bd98df057b",
+    "pg_parenthashes": {
+      "0": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab",
+      "1": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab"
+    },
+    "pg_blockhash": "1e6e9c1d546b7eec5203929c891d43ef5e587af0cdd0c0d2dcb226f805ad51e6",
+    "rg_parenthashes": {
+      "0": "b2b43eea10d290ad621b8f4efb33a5ff38145b2b07cfaa5279446be3b277aa1b",
+      "1": "ee43163c38f0bf91af4e325e3fd1e0b6d769b240b4f22441d772393e080f8a87"
+    },
+    "rg_blockhash": "034c6a79463fbddab532586f014348d6369811f425f183bd782586092c4f3e78"
+  },
+  "result_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "File",
+      "merkleroot": "69cd06ad65687c1232c0e37b60099d37e24f893fc978c40f6701aa63ce6d449a"
+    },
+    "lg_data": {
+      "merkleroot": null
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "File",
+      "merkleroot": "ac4b69fa6dd5a7a3180d694714490c63e9b34f2a3a706ad80733cd43640160ce"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "data_hash": "e3f92c769a590ab15c75430734d302049fd8dcecea5b2e37e5411a9ae19a699d",
+      "merkleroot": "eb3dcfd9dff72cc061d69859390a7d2844a44954d8b7b32532e46ec4c6e5c16f"
+    },
+    "lg_parenthashes": {
+      "0": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e",
+      "1": "d78bf13e2a066535c3ca113812989426a1379de57b6f17c60cb538cc1474184e"
+    },
+    "lg_blockhash": "8a3abb8db68cd1d02a680f8de241c3442b03b7fe5379242d32811940c52c6140",
+    "pgt_parenthashes": {
+      "0": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638",
+      "1": "0b1148cd537586ac9e03fc88b61e1e3cbc7a000b61eb928911968c5217734638"
+    },
+    "pgt_blockhash": "c9f1d9114c276c9223fa759d1207444b66663b208b0a153fed40e6e92a145164",
+    "pg_parenthashes": {
+      "0": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab",
+      "1": "e4931da82aaf66f03de56353d726678d0550cae184b1db48dfea1d6e27075fab"
+    },
+    "pg_blockhash": "88304de742f149feeed0d817ba3e13e830a415c188804597d562fb3b6a7dff4a",
+    "rg_parenthashes": {
+      "0": "b2b43eea10d290ad621b8f4efb33a5ff38145b2b07cfaa5279446be3b277aa1b",
+      "1": "ee43163c38f0bf91af4e325e3fd1e0b6d769b240b4f22441d772393e080f8a87"
+    },
+    "rg_blockhash": "9d6a0c3a24dc1e4beb5e2c009f43d71218ec6ae8cd0d30c320ea2b672ac1e349"
+  },
+  "signature": "7e43013717261114219c7f6ab19f6f89e7ef82d872a9485fb3346f33113c4744"
+}

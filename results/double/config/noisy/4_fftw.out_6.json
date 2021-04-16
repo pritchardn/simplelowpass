@@ -1,0 +1,312 @@
+{
+  "reprodata": {
+    "rmode": "6",
+    "meta_data": {
+      "repro_protocol": 0.1,
+      "hashing_alg": "_sha3.sha3_256"
+    },
+    "merkleroot": "9e8dd922bb70277f7472ddd12b5cbff2eb5ffbf36d27f9ed07b3999e9343d819"
+  },
+  "start_component": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "numInputPorts": 0,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "0afa3e39511fc0708f5228f677db864a93cc357f01bbe90bb4d6f2c0c9a7bdf5"
+    },
+    "lg_data": {
+      "data_volume": "5",
+      "merkleroot": "5aa5cea2c967aa3f8492cd996dee79a80a3a16a9bdae6170e5b3c7f9d9671d2e"
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "data_hash": "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a",
+      "merkleroot": "2a1e5ba2658dfb29529479729918edfd64bbdf9c0b50360cd633aecefa834b5f"
+    },
+    "lg_parenthashes": {},
+    "lg_blockhash": "fe68b02b86d8e33fff08b632884f28bd02806f62c21c7dd1309220c7a70c1e51",
+    "pgt_parenthashes": {},
+    "pgt_blockhash": "befcf22709b3fb21b837bd5240dcafdd326c7b97e9eef00ef760b6d0cf81cd7a",
+    "pg_parenthashes": {},
+    "pg_blockhash": "74bf55ccc728ba4df46c38dbc71737b122a727747d33fb9c05c4733d6b8232fe",
+    "rg_parenthashes": {},
+    "rg_blockhash": "2a32c9ffe8a1bc8353b38211727f32079f7ad785de9187bd16f79300b54a3c77"
+  },
+  "signal_component_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "numInputPorts": 1,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "c84a9335af14b1ff3bf2db02a0a5f416383e536c641d5799a9d2759f3cec63f5"
+    },
+    "lg_data": {
+      "execution_time": 5,
+      "num_cpus": 1,
+      "appclass": "simplelowpass.lowpass.gen_sig",
+      "merkleroot": "e7074e0e26e53abe2726ebb3941bfa769a6187927125fee6478729b648426a91"
+    },
+    "pgt_data": {
+      "type": "app",
+      "dt": "Component",
+      "merkleroot": "3de2c6c666b3595d9b66836d2f2b5bcdfeda7b2903fd493f6b90e5940db1bfa7"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+    },
+    "lg_parenthashes": {
+      "0": "fe68b02b86d8e33fff08b632884f28bd02806f62c21c7dd1309220c7a70c1e51"
+    },
+    "lg_blockhash": "bb32c5f72f2c903034103b403c12cdf3fb57e2f7658c71410907c1c5d706387d",
+    "pgt_parenthashes": {
+      "0": "befcf22709b3fb21b837bd5240dcafdd326c7b97e9eef00ef760b6d0cf81cd7a"
+    },
+    "pgt_blockhash": "2edfac09969a51f4ae45922bb41f7b37abd93aa7c1e15677a04d53a9cbe1389c",
+    "pg_parenthashes": {
+      "0": "74bf55ccc728ba4df46c38dbc71737b122a727747d33fb9c05c4733d6b8232fe"
+    },
+    "pg_blockhash": "f9d44a82aa4e2fc99830582ed038c40f009aba16f153507f94885b2a6077b4e9",
+    "rg_parenthashes": {
+      "0": "2a32c9ffe8a1bc8353b38211727f32079f7ad785de9187bd16f79300b54a3c77"
+    },
+    "rg_blockhash": "ee39989168e4488e91d7cf2c67fbe088d877392183b96a47c7926e36952bbd45"
+  },
+  "window_component_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "numInputPorts": 1,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "c84a9335af14b1ff3bf2db02a0a5f416383e536c641d5799a9d2759f3cec63f5"
+    },
+    "lg_data": {
+      "execution_time": 5,
+      "num_cpus": 1,
+      "appclass": "simplelowpass.lowpass.gen_window",
+      "merkleroot": "c95f9276a92b56198c112e7d3005690518ed68d4e9cf4c24d4b3389ac7fd30bb"
+    },
+    "pgt_data": {
+      "type": "app",
+      "dt": "Component",
+      "merkleroot": "3de2c6c666b3595d9b66836d2f2b5bcdfeda7b2903fd493f6b90e5940db1bfa7"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+    },
+    "lg_parenthashes": {
+      "0": "fe68b02b86d8e33fff08b632884f28bd02806f62c21c7dd1309220c7a70c1e51"
+    },
+    "lg_blockhash": "1d109987d6038283f2e2a028a81cb7b8fca19c45e14be7fe1941efbe497e5385",
+    "pgt_parenthashes": {
+      "0": "befcf22709b3fb21b837bd5240dcafdd326c7b97e9eef00ef760b6d0cf81cd7a"
+    },
+    "pgt_blockhash": "fb3bcfe870c1a782512ba15b0591dddaba55e22e11c06fee8e6ea7fe8937e529",
+    "pg_parenthashes": {
+      "0": "74bf55ccc728ba4df46c38dbc71737b122a727747d33fb9c05c4733d6b8232fe"
+    },
+    "pg_blockhash": "94c9cfe8e455a8e10feea57bca76930297a0267b965d6782130300f3cd31aa17",
+    "rg_parenthashes": {
+      "0": "2a32c9ffe8a1bc8353b38211727f32079f7ad785de9187bd16f79300b54a3c77"
+    },
+    "rg_blockhash": "a6a0df4a99527d707f2d2b4d100f6a9439aba15644d0d5408437c2416f719108"
+  },
+  "signal_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "numInputPorts": 1,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "c47a10d8081f121ae692f50aa602efdbe2b9f6d6c9e155a41330cde32392f42d"
+    },
+    "lg_data": {
+      "data_volume": "5",
+      "merkleroot": "5aa5cea2c967aa3f8492cd996dee79a80a3a16a9bdae6170e5b3c7f9d9671d2e"
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "data_hash": "3de8167c2e6c36df03fa955af2d14b33903be73e56626575d38db6429965edeb",
+      "merkleroot": "a532c77bae14f4fd673989768f5bb0fa9ebdee0ed75f6426b63db8e22a2badb8"
+    },
+    "lg_parenthashes": {
+      "0": "bb32c5f72f2c903034103b403c12cdf3fb57e2f7658c71410907c1c5d706387d"
+    },
+    "lg_blockhash": "55d1a2e3bd114547092b61fedc11f94536ff0929b5dc4a5bf0f288396f4d7db5",
+    "pgt_parenthashes": {
+      "0": "2edfac09969a51f4ae45922bb41f7b37abd93aa7c1e15677a04d53a9cbe1389c"
+    },
+    "pgt_blockhash": "c4de7e2370dbc1eed696b1d69c794ff643c4d7c8b4539ecf259dea6d2c01304f",
+    "pg_parenthashes": {
+      "0": "f9d44a82aa4e2fc99830582ed038c40f009aba16f153507f94885b2a6077b4e9"
+    },
+    "pg_blockhash": "6166fbc465707c2a7d0f4e3d2772651ae86e1e4997b88cb368480df009a60c76",
+    "rg_parenthashes": {
+      "0": "ee39989168e4488e91d7cf2c67fbe088d877392183b96a47c7926e36952bbd45"
+    },
+    "rg_blockhash": "4024f8f4516b9b51300a4290048ff3fa3bd5221fe412e6fdc6934a17aa117fbd"
+  },
+  "window_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "Memory",
+      "numInputPorts": 1,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "c47a10d8081f121ae692f50aa602efdbe2b9f6d6c9e155a41330cde32392f42d"
+    },
+    "lg_data": {
+      "data_volume": "5",
+      "merkleroot": "5aa5cea2c967aa3f8492cd996dee79a80a3a16a9bdae6170e5b3c7f9d9671d2e"
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "Memory",
+      "merkleroot": "6ac9192343696189b459fd7e71186ad0ffa3c254d0978db1f8aad8fac3e220ec"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "data_hash": "3d974bf717dc728031908b38755117bc3d9e7ae0dc4b74f5574132dd03e55f01",
+      "merkleroot": "dc202887f535eb2634d4774c53097ecda4f7b9844d52f30df1ee8301b3a731ac"
+    },
+    "lg_parenthashes": {
+      "0": "1d109987d6038283f2e2a028a81cb7b8fca19c45e14be7fe1941efbe497e5385"
+    },
+    "lg_blockhash": "d35208d4d80f153a3a29fb800c36e13daf103d257f86131a666e1142bb9f6aa4",
+    "pgt_parenthashes": {
+      "0": "fb3bcfe870c1a782512ba15b0591dddaba55e22e11c06fee8e6ea7fe8937e529"
+    },
+    "pgt_blockhash": "2bf76c435a988c0b9fd4b5f8255952e327d3106834c9fe868cba74b767a86415",
+    "pg_parenthashes": {
+      "0": "94c9cfe8e455a8e10feea57bca76930297a0267b965d6782130300f3cd31aa17"
+    },
+    "pg_blockhash": "5e3cb9469b238f21acfd8832048b77a013c9453f725a80608f8078e8ff401d2e",
+    "rg_parenthashes": {
+      "0": "a6a0df4a99527d707f2d2b4d100f6a9439aba15644d0d5408437c2416f719108"
+    },
+    "rg_blockhash": "cccaf6202a964e16b0267faf036ac9b0a57c69ae5a709d5af6f4dfb82f3549a2"
+  },
+  "filter_reprodata": {
+    "lgt_data": {
+      "category_type": "Application",
+      "category": "Component",
+      "numInputPorts": 2,
+      "numOutputPorts": 1,
+      "streaming": false,
+      "merkleroot": "285619e4f3ccefdd52e4b7d8d899fcb09e64f7a7ad250155b690333d5f6520da"
+    },
+    "lg_data": {
+      "execution_time": 5,
+      "num_cpus": 1,
+      "appclass": "simplelowpass.lowpass.filter_fft_fftw",
+      "merkleroot": "21c30dfca2814d6e012e2d1b23719891dcfbf05b81de315ae44a201d7aaa14a5"
+    },
+    "pgt_data": {
+      "type": "app",
+      "dt": "Component",
+      "merkleroot": "3de2c6c666b3595d9b66836d2f2b5bcdfeda7b2903fd493f6b90e5940db1bfa7"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+    },
+    "lg_parenthashes": {
+      "0": "55d1a2e3bd114547092b61fedc11f94536ff0929b5dc4a5bf0f288396f4d7db5",
+      "1": "d35208d4d80f153a3a29fb800c36e13daf103d257f86131a666e1142bb9f6aa4"
+    },
+    "lg_blockhash": "a0c359c0435ffe8e892f9c83a4bfcb7bf2ed56f0ada5fce2d2edac8bb06ab12d",
+    "pgt_parenthashes": {
+      "0": "c4de7e2370dbc1eed696b1d69c794ff643c4d7c8b4539ecf259dea6d2c01304f",
+      "1": "2bf76c435a988c0b9fd4b5f8255952e327d3106834c9fe868cba74b767a86415"
+    },
+    "pgt_blockhash": "bc919cd1169f6edb0031a6d238bfae231ebd4507c15f47fedd26913b7a514d49",
+    "pg_parenthashes": {
+      "0": "6166fbc465707c2a7d0f4e3d2772651ae86e1e4997b88cb368480df009a60c76",
+      "1": "5e3cb9469b238f21acfd8832048b77a013c9453f725a80608f8078e8ff401d2e"
+    },
+    "pg_blockhash": "6bcafc47b12b77234e22701e3c7533c0bbba1da8384f542f5cf82151f669b140",
+    "rg_parenthashes": {
+      "0": "4024f8f4516b9b51300a4290048ff3fa3bd5221fe412e6fdc6934a17aa117fbd",
+      "1": "cccaf6202a964e16b0267faf036ac9b0a57c69ae5a709d5af6f4dfb82f3549a2"
+    },
+    "rg_blockhash": "5b939e527cdbb29fc2c196a6bc16c02c3a72b41e0040efbd02001623767c3487"
+  },
+  "result_data_reprodata": {
+    "lgt_data": {
+      "category_type": "Data",
+      "category": "File",
+      "numInputPorts": 1,
+      "numOutputPorts": 0,
+      "streaming": false,
+      "merkleroot": "37ecfe1323490f39cfa6c05d837fa63506693aa5309b47532d2e6b672f9afd76"
+    },
+    "lg_data": {
+      "data_volume": "5",
+      "check_filepath_exists": "0",
+      "merkleroot": "2020d1b771f763a537608109828fef1f89ab9f80d8d9b13927f3d5cfd0bd6d81"
+    },
+    "pgt_data": {
+      "type": "plain",
+      "storage": "File",
+      "merkleroot": "ac4b69fa6dd5a7a3180d694714490c63e9b34f2a3a706ad80733cd43640160ce"
+    },
+    "pg_data": {
+      "merkleroot": null
+    },
+    "rg_data": {
+      "status": 2,
+      "data_hash": "95da4c458852303d11aee133dc66c51ec69cef25913dcfddcc68b5122d12d08f",
+      "merkleroot": "3be0d6913c61d662c3d4b00fe62ebc28bd38b35efaf66e28cbca79bba0e74583"
+    },
+    "lg_parenthashes": {
+      "0": "a0c359c0435ffe8e892f9c83a4bfcb7bf2ed56f0ada5fce2d2edac8bb06ab12d"
+    },
+    "lg_blockhash": "7acd4b4e7d93177134e20eb9b5a9bc5f128fc5cbceab6eafef5cb5991f9eaeee",
+    "pgt_parenthashes": {
+      "0": "bc919cd1169f6edb0031a6d238bfae231ebd4507c15f47fedd26913b7a514d49"
+    },
+    "pgt_blockhash": "afaacfcc34a29cc80075639d383e591db0f1037c72607881f820282878d30816",
+    "pg_parenthashes": {
+      "0": "6bcafc47b12b77234e22701e3c7533c0bbba1da8384f542f5cf82151f669b140"
+    },
+    "pg_blockhash": "ea39e8a53560e73b44e1af059865c8613ef4803b0e3b591a90f3313e97df7993",
+    "rg_parenthashes": {
+      "0": "5b939e527cdbb29fc2c196a6bc16c02c3a72b41e0040efbd02001623767c3487"
+    },
+    "rg_blockhash": "d703824d625b56931a4f7583be07fec02ac57ab693e12cbaa5b2282edf49ff5f"
+  },
+  "signature": "0b2bf9f50361ff29c1c4bd107f2f96bc3a2c829d2365d08b2037f1aaff967326"
+}

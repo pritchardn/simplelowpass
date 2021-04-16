@@ -161,6 +161,8 @@ def filter_component_reprodata(component: dict, rmode: ReproducibilityFlags):
         if component['pgt_data']['type'] == 'plain':
             component['pgt_data'].pop('storage')
     """
+    if rmode == ReproducibilityFlags.REPRODUCE and component['pgt_data']['type'] == 'app':
+        component['pgt_data'].pop('dt')
     if rmode != ReproducibilityFlags.REPLICATE_COMP or rmode != ReproducibilityFlags.RECOMPUTE:
         component['pgt_data'].pop('rank')
         component['pgt_data'].pop('node')
@@ -177,6 +179,8 @@ def filter_component_reprodata(component: dict, rmode: ReproducibilityFlags):
     # RG_Merkleroot
     if component['pgt_data']['type'] == 'plain' and rmode.value <= ReproducibilityFlags.RECOMPUTE.value:
         component['rg_data'].pop('data_hash')
+    if rmode.value == ReproducibilityFlags.REPRODUCE.value:
+        component['rg_data'].pop('status')
     rg_root = MerkleTree(component['rg_data'].items(), common_hash).merkle_root
     component['rg_data']['merkleroot'] = rg_root
     return component

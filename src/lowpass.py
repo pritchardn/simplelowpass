@@ -292,7 +292,6 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
     }, 'rg_data': {
         'status': 2
     }}
-
     return out_np, rout
 
 
@@ -362,10 +361,18 @@ def build_BlocDAGs(direct, sig_reprodata, win_reprodata, signal_reprodata, windo
             filter_component_reprodata(win, rmode)
             chain_parents(sig, [start])
             chain_parents(win, [start])
-            chain_parents(signal, [sig])
-            chain_parents(window, [win])
-        chain_parents(result, [signal, window])
-        chain_parents(outfile, [result])
+            if rmode == ReproducibilityFlags.REPRODUCE:
+                chain_parents(signal, [start])
+                chain_parents(window, [start])
+            else:
+                chain_parents(signal, [sig])
+                chain_parents(window, [win])
+        if rmode == ReproducibilityFlags.REPRODUCE:
+            chain_parents(result, [signal, window])
+            chain_parents(outfile, [signal, window])
+        else:
+            chain_parents(result, [signal, window])
+            chain_parents(outfile, [result])
         if direct:
             repro = {'reprodata': generate_reprodata(rmode), 'start_component': start,
                      'signal_data_reprodata': signal, 'window_data_reprodata': window,
@@ -430,7 +437,7 @@ def main(fname, dirout, direct, precision, rmode=ReproducibilityFlags.RERUN):
                 outname = dirout + 'noisy/' + config['name'] + '_' + str(m_name) + '.out'
 
         result, result_reprodata = func(sig, win, prec, rmode)
-        outfile_reprodata = generate_file_reprodata(result, outname, 1, 0)
+        outfile_reprodata = generate_file_reprodata(result.tostring(), outname, 1, 0)
         print("Saving to " + outname)
         np.save(outname, result)
         reprodata = build_BlocDAGs(direct, sig_reprodata, win_reprodata, signal_reprodata, window_reprodata,

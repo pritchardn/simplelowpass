@@ -13,9 +13,11 @@ from lowpass import main as lowp
 from postProcessing.utils import system_summary
 from postProcessing.rerun_test import main as rerun
 from postProcessing.repetition_test import main as repeat
+from postProcessing.repetition_collection import main as repeat_collect
 from postProcessing.recompute_test import main as recompute
 from postProcessing.reproduce_test_1 import main as repro1
 from postProcessing.reproduce_test_2 import main as repro2
+from postProcessing.reproduce_test import main as reproduce
 
 
 def make_dirs(base):
@@ -171,13 +173,17 @@ def main(base_loc, pub_loc):
     print("Rerun Analysis")
     rerun(base_loc + 'results/double/config/clean/', base_loc + 'results/rerun')
     print("Repetition Analysis")
-    repeat(base_loc + 'results/double/raw/clean/', base_loc + "results/repeat",
+    repeat(base_loc + 'results/double/raw/noisy/', base_loc + "results/repeat1",
            base_loc + 'results/double/raw/clean/3_numpy_pointwise.out.npy')
+    print("Repetition Hash Collecction")
+    repeat_collect(base_loc + 'results/double/raw/noisy/', base_loc + 'results/repeat')
     print("Reproduction Analysis 1")
-    repro1(base_loc + 'results/double/raw/clean/', base_loc + 'results/reproduce1')
+    repro1(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce1')
     print("Reproduction Analysis 2")
-    repro2(base_loc + 'results/single/raw/clean/', base_loc + 'results/double/raw/clean/',
+    repro2(base_loc + 'results/single/config/clean/', base_loc + 'results/double/config/clean/',
            base_loc + 'results/reproduce2')
+    print("Reproduction Hash Collection")
+    reproduce(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce')
     print("Recompute Analysis")
     recompute("process_direct('../data/', '../results/')",
               base_loc + 'results/recompute', 'scratch.out', 5)

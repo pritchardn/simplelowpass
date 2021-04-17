@@ -1,0 +1,669 @@
+{
+    "linkDataArray": [
+        {
+            "from": -2,
+            "fromPort": "1",
+            "loop_aware": "0",
+            "to": -4,
+            "toPort": "8c9663ed-0617-450b-836a-c142ea6b4a4d"
+        },
+        {
+            "from": -2,
+            "fromPort": "1",
+            "loop_aware": "0",
+            "to": -5,
+            "toPort": "8c9663ed-0617-450b-836a-c142ea6b4a4d"
+        },
+        {
+            "from": -4,
+            "fromPort": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+            "loop_aware": "0",
+            "to": -7,
+            "toPort": "eb91b0ac-b6f1-478a-b622-98841c0ba011"
+        },
+        {
+            "from": -7,
+            "fromPort": "76078840-580b-4db8-8889-d56c5257bf12",
+            "loop_aware": "0",
+            "to": -6,
+            "toPort": "8c9663ed-0617-450b-836a-c142ea6b4a4d"
+        },
+        {
+            "from": -5,
+            "fromPort": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+            "loop_aware": "0",
+            "to": -8,
+            "toPort": "3f1f8f0d-5c7d-407b-b8e7-ef51a94cfcff"
+        },
+        {
+            "from": -8,
+            "fromPort": "e896d30e-0908-423c-add3-6e2e3a9326f1",
+            "loop_aware": "0",
+            "to": -6,
+            "toPort": "3"
+        },
+        {
+            "from": -6,
+            "fromPort": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+            "loop_aware": "0",
+            "to": -3,
+            "toPort": "2"
+        }
+    ],
+    "modelData": {
+        "eagleCommitHash": "Unknown",
+        "eagleVersion": "Unknown",
+        "filePath": "sdf.graph",
+        "fileType": "graph",
+        "git_url": "",
+        "repo": "",
+        "repoBranch": "",
+        "repoService": "Unknown",
+        "sha": ""
+    },
+    "nodeDataArray": [
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Memory",
+            "categoryType": "Data",
+            "collapsed": false,
+            "color": "#394BB2",
+            "description": "",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "",
+                    "name": "data_volume",
+                    "readonly": false,
+                    "text": "Data volume",
+                    "type": "Unknown",
+                    "value": "5"
+                },
+                {
+                    "description": "",
+                    "name": "group_end",
+                    "readonly": false,
+                    "text": "Group end",
+                    "type": "Unknown",
+                    "value": "0"
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [],
+            "isData": true,
+            "isGroup": false,
+            "key": -2,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "1",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "Start",
+            "width": 200,
+            "x": 363,
+            "y": 382.5
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "File",
+            "categoryType": "Data",
+            "collapsed": false,
+            "color": "#394BB2",
+            "description": "",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "",
+                    "name": "data_volume",
+                    "readonly": false,
+                    "text": "Data volume",
+                    "type": "Unknown",
+                    "value": "5"
+                },
+                {
+                    "description": "",
+                    "name": "group_end",
+                    "readonly": false,
+                    "text": "Group end",
+                    "type": "Unknown",
+                    "value": "0"
+                },
+                {
+                    "description": "",
+                    "name": "check_filepath_exists",
+                    "readonly": false,
+                    "text": "Check file path exists",
+                    "type": "Unknown",
+                    "value": "1"
+                },
+                {
+                    "description": "",
+                    "name": "filepath",
+                    "readonly": false,
+                    "text": "File path",
+                    "type": "Unknown",
+                    "value": "filter_cuda.out"
+                },
+                {
+                    "description": "",
+                    "name": "dirname",
+                    "readonly": false,
+                    "text": "Directory name",
+                    "type": "Unknown",
+                    "value": ""
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "2",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": true,
+            "isGroup": false,
+            "key": -3,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [],
+            "selected": true,
+            "showPorts": true,
+            "streaming": false,
+            "subject": null,
+            "text": "End",
+            "width": 200,
+            "x": 1166,
+            "y": 405.5
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Component",
+            "categoryType": "Application",
+            "collapsed": false,
+            "color": "#3498DB",
+            "description": "A signal generator",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "the length of the signal series",
+                    "name": "length",
+                    "readonly": false,
+                    "text": "length",
+                    "type": "Integer",
+                    "value": 256
+                },
+                {
+                    "description": "Application class",
+                    "name": "appclass",
+                    "readonly": true,
+                    "text": "appclass",
+                    "type": "String",
+                    "value": "dlg.common.reproducibility.apps_lowpass.LP_SignalGenerator"
+                },
+                {
+                    "description": "sample rate of the signal",
+                    "name": "srate",
+                    "readonly": false,
+                    "text": "sample rate",
+                    "type": "Integer",
+                    "value": 5000
+                },
+                {
+                    "description": "The frequencies used ",
+                    "name": "freqs",
+                    "readonly": false,
+                    "text": "frequencies",
+                    "type": "List",
+                    "value": [
+                        440,
+                        800,
+                        1000,
+                        2000
+                    ]
+                },
+                {
+                    "description": "The noise parameters used ",
+                    "name": "noise",
+                    "readonly": false,
+                    "text": "noise",
+                    "type": "List",
+                    "value": []
+                },
+                {
+                    "description": "Estimated execution time",
+                    "name": "execution_time",
+                    "readonly": false,
+                    "text": "Execution time",
+                    "type": "Float",
+                    "value": 5
+                },
+                {
+                    "description": "Number of cores used",
+                    "name": "num_cpus",
+                    "readonly": false,
+                    "text": "Num CPUs",
+                    "type": "Integer",
+                    "value": 1
+                },
+                {
+                    "description": "Component is start of a group",
+                    "name": "group_start",
+                    "readonly": false,
+                    "text": "Group start",
+                    "type": "Boolean",
+                    "value": 0
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "8c9663ed-0617-450b-836a-c142ea6b4a4d",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": false,
+            "isGroup": false,
+            "key": -4,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "Signal generator",
+            "width": 200,
+            "x": 641,
+            "y": 328.5
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Component",
+            "categoryType": "Application",
+            "collapsed": false,
+            "color": "#3498DB",
+            "description": "Generates a filter window",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "the length of the signal series",
+                    "name": "length",
+                    "readonly": false,
+                    "text": "length",
+                    "type": "Integer",
+                    "value": 256
+                },
+                {
+                    "description": "Application class",
+                    "name": "appclass",
+                    "readonly": true,
+                    "text": "appclass",
+                    "type": "String",
+                    "value": "dlg.common.reproducibility.apps_lowpass.LP_WindowGenerator"
+                },
+                {
+                    "description": "The cutoff frequency of the filter",
+                    "name": "cutoff",
+                    "readonly": false,
+                    "text": "length",
+                    "type": "Integer",
+                    "value": 600
+                },
+                {
+                    "description": "The sample rate of the signal",
+                    "name": "srate",
+                    "readonly": false,
+                    "text": "sample rate",
+                    "type": "Integer",
+                    "value": 5000
+                },
+                {
+                    "description": "Estimated execution time",
+                    "name": "execution_time",
+                    "readonly": false,
+                    "text": "Execution time",
+                    "type": "Float",
+                    "value": 5
+                },
+                {
+                    "description": "Number of cores used",
+                    "name": "num_cpus",
+                    "readonly": false,
+                    "text": "Num CPUs",
+                    "type": "Integer",
+                    "value": 1
+                },
+                {
+                    "description": "Component is start of a group",
+                    "name": "group_start",
+                    "readonly": false,
+                    "text": "Group start",
+                    "type": "Boolean",
+                    "value": 0
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "8c9663ed-0617-450b-836a-c142ea6b4a4d",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": false,
+            "isGroup": false,
+            "key": -5,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "Window generator",
+            "width": 200,
+            "x": 552,
+            "y": 502.5
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Component",
+            "categoryType": "Application",
+            "collapsed": false,
+            "color": "#3498DB",
+            "description": "Filter FFT cuda",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "Precision, true means double, false means single",
+                    "name": "precision",
+                    "readonly": false,
+                    "text": "precision",
+                    "type": "Boolean",
+                    "value": 1
+                },
+                {
+                    "description": "Application class",
+                    "name": "appclass",
+                    "readonly": true,
+                    "text": "appclass",
+                    "type": "String",
+                    "value": "dlg.common.reproducibility.apps_lowpass.LP_filter_fft_cuda"
+                },
+                {
+                    "description": "Estimated execution time",
+                    "name": "execution_time",
+                    "readonly": false,
+                    "text": "Execution time",
+                    "type": "Float",
+                    "value": 5
+                },
+                {
+                    "description": "Number of cores used",
+                    "name": "num_cpus",
+                    "readonly": false,
+                    "text": "Num CPUs",
+                    "type": "Integer",
+                    "value": 1
+                },
+                {
+                    "description": "Component is start of a group",
+                    "name": "group_start",
+                    "readonly": false,
+                    "text": "Group start",
+                    "type": "Boolean",
+                    "value": 0
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "8c9663ed-0617-450b-836a-c142ea6b4a4d",
+                    "IdText": "array",
+                    "event": false
+                },
+                {
+                    "Id": "3",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": false,
+            "isGroup": false,
+            "key": -6,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "6dbeb133-808f-4df4-9f40-9b2fe4fa122e",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "Cuda fft filter",
+            "width": 200,
+            "x": 914,
+            "y": 405.5
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Memory",
+            "categoryType": "Data",
+            "collapsed": false,
+            "color": "#394BB2",
+            "description": "",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "",
+                    "name": "data_volume",
+                    "readonly": false,
+                    "text": "Data volume",
+                    "type": "Unknown",
+                    "value": "5"
+                },
+                {
+                    "description": "",
+                    "name": "group_end",
+                    "readonly": false,
+                    "text": "Group end",
+                    "type": "Unknown",
+                    "value": "0"
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "eb91b0ac-b6f1-478a-b622-98841c0ba011",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": true,
+            "isGroup": false,
+            "key": -7,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "76078840-580b-4db8-8889-d56c5257bf12",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "signal to filter",
+            "width": 200,
+            "x": 777.5,
+            "y": 367
+        },
+        {
+            "canHaveInputs": true,
+            "canHaveOutputs": true,
+            "category": "Memory",
+            "categoryType": "Data",
+            "collapsed": false,
+            "color": "#394BB2",
+            "description": "",
+            "drawOrderHint": 0,
+            "exitAppFields": [],
+            "exitApplicationName": "",
+            "exitApplicationType": "None",
+            "expanded": false,
+            "fields": [
+                {
+                    "description": "",
+                    "name": "data_volume",
+                    "readonly": false,
+                    "text": "Data volume",
+                    "type": "Unknown",
+                    "value": "5"
+                },
+                {
+                    "description": "",
+                    "name": "group_end",
+                    "readonly": false,
+                    "text": "Group end",
+                    "type": "Unknown",
+                    "value": "0"
+                }
+            ],
+            "flipPorts": false,
+            "height": 200,
+            "inputAppFields": [],
+            "inputApplicationName": "",
+            "inputApplicationType": "None",
+            "inputLocalPorts": [],
+            "inputPorts": [
+                {
+                    "Id": "3f1f8f0d-5c7d-407b-b8e7-ef51a94cfcff",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "isData": true,
+            "isGroup": false,
+            "key": -8,
+            "outputAppFields": [],
+            "outputApplicationName": "",
+            "outputApplicationType": "None",
+            "outputLocalPorts": [],
+            "outputPorts": [
+                {
+                    "Id": "e896d30e-0908-423c-add3-6e2e3a9326f1",
+                    "IdText": "array",
+                    "event": false
+                }
+            ],
+            "selected": false,
+            "showPorts": false,
+            "streaming": false,
+            "subject": null,
+            "text": "window to filter",
+            "width": 200,
+            "x": 733,
+            "y": 454
+        }
+    ]
+}

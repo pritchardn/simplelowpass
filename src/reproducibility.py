@@ -179,6 +179,8 @@ def filter_component_reprodata(component: dict, rmode: ReproducibilityFlags):
     # RG_Merkleroot
     if component['pgt_data']['type'] == 'plain' and rmode.value <= ReproducibilityFlags.RECOMPUTE.value:
         component['rg_data'].pop('data_hash')
+    if component['pgt_data']['type'] == 'app' and not (rmode.value == ReproducibilityFlags.RECOMPUTE.value or rmode.value == ReproducibilityFlags.REPLICATE_COMP.value):
+        component['rg_data'] = {'status': component['rg_data']['status']}
     if rmode.value == ReproducibilityFlags.REPRODUCE.value:
         component['rg_data'].pop('status')
     rg_root = MerkleTree(component['rg_data'].items(), common_hash).merkle_root

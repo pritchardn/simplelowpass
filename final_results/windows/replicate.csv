@@ -1,6 +1,8 @@
 Test,Pass
 Repeat,True
+Recompute,False
 Reproduce 1,True
 Reproduce 2,False
 Scientific Replicate,False
 Computational Replicate,False
+Total Replicate,True

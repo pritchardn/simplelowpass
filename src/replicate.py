@@ -18,6 +18,7 @@ from postProcessing.recompute_test import main as recompute
 from postProcessing.reproduce_test_1 import main as repro1
 from postProcessing.reproduce_test_2 import main as repro2
 from postProcessing.reproduce_test import main as reproduce
+from postProcessing.recompute_hashcollection import main as recompute_hash
 
 
 def make_dirs(base):
@@ -185,12 +186,15 @@ def main(base_loc, pub_loc):
     print("Reproduction Hash Collection")
     reproduce(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce')
     print("Recompute Analysis")
-    recompute("process_direct('../data/', '../results/')",
+    recompute_hash(base_loc + 'results/double/config/clean/', base_loc + 'results/recompute')
+    """
+        recompute("process_direct('../data/', '../results/')",
               base_loc + 'results/recompute', 'scratch.out', 5)
     sys_summ = system_summary()
     with open(base_loc + 'results/system.json', 'w') as file:
         json.dump(sys_summ, file, indent=2)
     replicate(base_loc, pub_loc)
+    """
 
 
 if __name__ == "__main__":

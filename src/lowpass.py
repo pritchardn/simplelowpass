@@ -62,6 +62,9 @@ def gen_sig(freqs, length, sample_rate, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        "length": length,
+        "sample_rate": sample_rate,
+        "frequencies": freqs,
         'status': 2
     }}
 
@@ -103,6 +106,9 @@ def gen_window(length, cutoff, sample_rate, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        'length': length,
+        'cutoff': cutoff,
+        'sample_rate': sample_rate,
         'status': 2
     }}
 
@@ -175,6 +181,8 @@ def filter_fft_np(signal: np.array, window: np.array, prec: dict, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        'precision_float': str(prec['float']),
+        'precision_complex': str(prec['complex']),
         'status': 2
     }}
 
@@ -220,6 +228,8 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        'precision_float': str(prec['float']),
+        'precision_complex': str(prec['complex']),
         'status': 2
     }}
 
@@ -290,6 +300,8 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        'precision_float': str(prec['float']),
+        'precision_complex': str(prec['complex']),
         'status': 2
     }}
     return out_np, rout
@@ -324,6 +336,8 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
         'node': '127.0.0.1',
         'island': '127.0.0.1'
     }, 'rg_data': {
+        'precision_float': str(prec['float']),
+        'precision_complex': str(prec['complex']),
         'status': 2
     }}
 

@@ -66,8 +66,16 @@
       "merkleroot": null
     },
     "rg_data": {
+      "length": 256,
+      "sample_rate": 5000,
+      "frequencies": [
+        440,
+        800,
+        1000,
+        2000
+      ],
       "status": 2,
-      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+      "merkleroot": "4fdc9b894c9844de56f06031fab39eae5fc009b9b623599da78171999009bed2"
     },
     "lg_parenthashes": {
       "0": "fe68b02b86d8e33fff08b632884f28bd02806f62c21c7dd1309220c7a70c1e51"
@@ -84,7 +92,7 @@
     "rg_parenthashes": {
       "0": "2a32c9ffe8a1bc8353b38211727f32079f7ad785de9187bd16f79300b54a3c77"
     },
-    "rg_blockhash": "ee39989168e4488e91d7cf2c67fbe088d877392183b96a47c7926e36952bbd45"
+    "rg_blockhash": "8a0ad42e2a79d2dc82eac1ab22c63fe30ff44cb8a49b6f989c2232ec80a2483e"
   },
   "window_component_reprodata": {
     "lgt_data": {
@@ -110,8 +118,11 @@
       "merkleroot": null
     },
     "rg_data": {
+      "length": 256,
+      "cutoff": 600,
+      "sample_rate": 5000,
       "status": 2,
-      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+      "merkleroot": "e6e25b99b289555319cb09e0be35729448292a378292dd38c0fec4d8eed64173"
     },
     "lg_parenthashes": {
       "0": "fe68b02b86d8e33fff08b632884f28bd02806f62c21c7dd1309220c7a70c1e51"
@@ -128,7 +139,7 @@
     "rg_parenthashes": {
       "0": "2a32c9ffe8a1bc8353b38211727f32079f7ad785de9187bd16f79300b54a3c77"
     },
-    "rg_blockhash": "a6a0df4a99527d707f2d2b4d100f6a9439aba15644d0d5408437c2416f719108"
+    "rg_blockhash": "1e9e4bd9c638a35a7883d0761b43bfb716b635d1d07220f1d6ed5f723452c2a9"
   },
   "signal_data_reprodata": {
     "lgt_data": {
@@ -169,9 +180,9 @@
     },
     "pg_blockhash": "6166fbc465707c2a7d0f4e3d2772651ae86e1e4997b88cb368480df009a60c76",
     "rg_parenthashes": {
-      "0": "ee39989168e4488e91d7cf2c67fbe088d877392183b96a47c7926e36952bbd45"
+      "0": "8a0ad42e2a79d2dc82eac1ab22c63fe30ff44cb8a49b6f989c2232ec80a2483e"
     },
-    "rg_blockhash": "32b81b2f8f215495052f358f7bf748055443ba3fb06963716a66a5c842a01250"
+    "rg_blockhash": "f6e9fa0de19dc1b4cc7a342cb5b12de7efd75b0ca735d999fad2b7450a56cc75"
   },
   "window_data_reprodata": {
     "lgt_data": {
@@ -212,9 +223,9 @@
     },
     "pg_blockhash": "5e3cb9469b238f21acfd8832048b77a013c9453f725a80608f8078e8ff401d2e",
     "rg_parenthashes": {
-      "0": "a6a0df4a99527d707f2d2b4d100f6a9439aba15644d0d5408437c2416f719108"
+      "0": "1e9e4bd9c638a35a7883d0761b43bfb716b635d1d07220f1d6ed5f723452c2a9"
     },
-    "rg_blockhash": "cccaf6202a964e16b0267faf036ac9b0a57c69ae5a709d5af6f4dfb82f3549a2"
+    "rg_blockhash": "f6e8ff358b95503e31fab5dd1db068ccd5fcb605b72eda2e7aa47d1b993c7b6d"
   },
   "filter_reprodata": {
     "lgt_data": {
@@ -240,8 +251,10 @@
       "merkleroot": null
     },
     "rg_data": {
+      "precision_float": "<class 'numpy.float64'>",
+      "precision_complex": "<class 'numpy.complex128'>",
       "status": 2,
-      "merkleroot": "689fcf0d74c42200bef177db545adc43c135dfb0d7dc85b166db3af1dcded235"
+      "merkleroot": "363050d7dea38a4b0926f34433f203e5752eb967fde22071d973712afdaeb225"
     },
     "lg_parenthashes": {
       "0": "55d1a2e3bd114547092b61fedc11f94536ff0929b5dc4a5bf0f288396f4d7db5",
@@ -259,10 +272,10 @@
     },
     "pg_blockhash": "ee9f8764f0a5067be22b32615f1c96337fee0e855a140e14b8785cc32bd4795c",
     "rg_parenthashes": {
-      "0": "32b81b2f8f215495052f358f7bf748055443ba3fb06963716a66a5c842a01250",
-      "1": "cccaf6202a964e16b0267faf036ac9b0a57c69ae5a709d5af6f4dfb82f3549a2"
+      "0": "f6e9fa0de19dc1b4cc7a342cb5b12de7efd75b0ca735d999fad2b7450a56cc75",
+      "1": "f6e8ff358b95503e31fab5dd1db068ccd5fcb605b72eda2e7aa47d1b993c7b6d"
     },
-    "rg_blockhash": "d5c9abd391520547c3c43505e181318a0f114a1cbd02fdfeaa3ff23ee1b65b68"
+    "rg_blockhash": "4a63fee646632db8863bb57cd9773350ab36a7eb02393d85b96573eaa8a110f5"
   },
   "result_data_reprodata": {
     "lgt_data": {
@@ -304,9 +317,9 @@
     },
     "pg_blockhash": "7235540caa3f740201e847c1ca8ebfa5467b85f98ad739231ba95766b3ff42ce",
     "rg_parenthashes": {
-      "0": "d5c9abd391520547c3c43505e181318a0f114a1cbd02fdfeaa3ff23ee1b65b68"
+      "0": "4a63fee646632db8863bb57cd9773350ab36a7eb02393d85b96573eaa8a110f5"
     },
-    "rg_blockhash": "e38251bdef2f325d03bd9e835e0221cb597e4c54c0d9f2aaccfaeaec6a8d8599"
+    "rg_blockhash": "2efdd41b20711df27035091f602081991b2da72194dfad1bc00d4b12a821eafd"
   },
-  "signature": "ce6d06b0203878a3f0739af045512372eae7b05053d04598910a4e8681502ac2"
+  "signature": "9869fa8c4729db190fe8d28ad1587de6d51ed6db997ca1dfa8e2dc296b21bb9d"
 }

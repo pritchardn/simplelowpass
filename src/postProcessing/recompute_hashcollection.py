@@ -17,13 +17,13 @@ def main(dir_in, fout):
     methods = ['cufft', 'fftw', 'numpy_fft', 'numpy_pointwise']
     with open(fout + '.csv', 'w', newline='') as csvf:
         fieldnames = ['Method']
-        for name in glob.glob(dir_in + '*_' + methods[0] + '.out.npy'):
+        for name in sorted(glob.glob(dir_in + '*_' + methods[0] + '.out.npy')):
             fieldnames.append(name.split('_')[0])
         writer = csv.DictWriter(csvf, fieldnames=fieldnames)
         writer.writeheader()
         for method in methods:
             signatures = []
-            for name in glob.glob(dir_in + '*_' + method + '.out_4.json'):
+            for name in sorted(glob.glob(dir_in + '*_' + method + '.out_4.json')):
                 with open(name) as f:
                     signatures.append(json.load(f)['signature'])
             row = {fieldnames[0]: method}

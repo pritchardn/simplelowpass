@@ -14,6 +14,7 @@ import pyfftw
 
 from reproducibility import filter_component_reprodata, generate_memory_reprodata, generate_file_reprodata, \
     ReproducibilityFlags, chain_parents, generate_reprodata, agglomerate_leaves, rflag_caster
+from postProcessing.utils import system_summary
 
 PRECISIONS = {'double': {'float': np.float64, 'complex': np.complex128},
               'single': {'float': np.float32, 'complex': np.complex64}}
@@ -65,6 +66,7 @@ def gen_sig(freqs, length, sample_rate, rmode):
         "length": length,
         "sample_rate": sample_rate,
         "frequencies": freqs,
+        'system': system_summary(),
         'status': 2
     }}
 
@@ -109,6 +111,7 @@ def gen_window(length, cutoff, sample_rate, rmode):
         'length': length,
         'cutoff': cutoff,
         'sample_rate': sample_rate,
+        'system': system_summary(),
         'status': 2
     }}
 
@@ -183,6 +186,7 @@ def filter_fft_np(signal: np.array, window: np.array, prec: dict, rmode):
     }, 'rg_data': {
         'precision_float': str(prec['float']),
         'precision_complex': str(prec['complex']),
+        'system': system_summary(),
         'status': 2
     }}
 
@@ -230,6 +234,7 @@ def filter_fft_fftw(signal: np.array, window: np.array, prec: dict, rmode):
     }, 'rg_data': {
         'precision_float': str(prec['float']),
         'precision_complex': str(prec['complex']),
+        'system': system_summary(),
         'status': 2
     }}
 
@@ -302,6 +307,7 @@ def filter_fft_cuda(signal: np.array, window: np.array, prec: dict, rmode):
     }, 'rg_data': {
         'precision_float': str(prec['float']),
         'precision_complex': str(prec['complex']),
+        'system': system_summary(),
         'status': 2
     }}
     return out_np, rout
@@ -338,6 +344,7 @@ def filter_pointwise_np(signal: np.array, window: np.array, prec: dict, rmode):
     }, 'rg_data': {
         'precision_float': str(prec['float']),
         'precision_complex': str(prec['complex']),
+        'system': system_summary(),
         'status': 2
     }}
 

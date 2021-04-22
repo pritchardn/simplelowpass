@@ -143,12 +143,12 @@ def filter_component_reprodata(component: dict, rmode: ReproducibilityFlags):
     component['lgt_data']['merkleroot'] = lgt_root
 
     # LG_Merkleroot
-    if rmode != ReproducibilityFlags.RECOMPUTE or rmode != ReproducibilityFlags.REPLICATE_COMP:
+    if not (rmode == ReproducibilityFlags.RECOMPUTE or rmode == ReproducibilityFlags.REPLICATE_COMP or rmode == ReproducibilityFlags.REPLICATE_TOTAL):
         # Remove filenames and dirnames
         if component['lgt_data']['category'] == 'File':
             component['lg_data'].pop('filepath')
             component['lg_data'].pop('dirname')
-    if rmode == ReproducibilityFlags.RERUN or rmode == ReproducibilityFlags.REPRODUCE:
+    if (rmode == ReproducibilityFlags.RERUN or rmode == ReproducibilityFlags.REPRODUCE or rmode == ReproducibilityFlags.REPLICATE_SCI):
         # Remove everything
         component['lg_data'] = {}
 

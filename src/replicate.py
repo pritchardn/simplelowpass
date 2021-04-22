@@ -10,15 +10,11 @@ import os
 import sys
 
 from lowpass import main as lowp
-from postProcessing.utils import system_summary
-from postProcessing.rerun_test import main as rerun
+from postProcessing.hash_collection import collect as collect
 from postProcessing.repetition_test import main as repeat
-from postProcessing.repetition_collection import main as repeat_collect
-from postProcessing.recompute_test import main as recompute
 from postProcessing.reproduce_test_1 import main as repro1
 from postProcessing.reproduce_test_2 import main as repro2
-from postProcessing.reproduce_test import main as reproduce
-from postProcessing.recompute_hashcollection import main as recompute_hash
+from reproducibility import ReproducibilityFlags
 
 
 def make_dirs(base):
@@ -172,29 +168,27 @@ def main(base_loc, pub_loc):
     print("Processing from direct files")
     process_direct(base_loc + 'data/', base_loc + 'results/')
     print("Rerun Analysis")
-    rerun(base_loc + 'results/double/config/clean/', base_loc + 'results/rerun')
+    collect(base_loc + 'results/double/config/clean/', base_loc + 'results/rerun', ReproducibilityFlags.RERUN)
     print("Repetition Analysis")
     repeat(base_loc + 'results/double/raw/noisy/', base_loc + "results/repeat1",
            base_loc + 'results/double/raw/clean/3_numpy_pointwise.out.npy')
     print("Repetition Hash Collecction")
-    repeat_collect(base_loc + 'results/double/raw/noisy/', base_loc + 'results/repeat')
+    collect(base_loc + 'results/double/raw/noisy/', base_loc + 'results/repeat', ReproducibilityFlags.REPEAT)
+    print("Recompute Analysis")
+    collect(base_loc + 'results/double/config/clean/', base_loc + 'results/recompute', ReproducibilityFlags.RECOMPUTE)
     print("Reproduction Analysis 1")
     repro1(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce1')
     print("Reproduction Analysis 2")
     repro2(base_loc + 'results/single/config/clean/', base_loc + 'results/double/config/clean/',
            base_loc + 'results/reproduce2')
     print("Reproduction Hash Collection")
-    reproduce(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce')
-    print("Recompute Analysis")
-    recompute_hash(base_loc + 'results/double/config/clean/', base_loc + 'results/recompute')
-    """
-        recompute("process_direct('../data/', '../results/')",
-              base_loc + 'results/recompute', 'scratch.out', 5)
-    sys_summ = system_summary()
-    with open(base_loc + 'results/system.json', 'w') as file:
-        json.dump(sys_summ, file, indent=2)
-    replicate(base_loc, pub_loc)
-    """
+    collect(base_loc + 'results/double/config/clean/', base_loc + 'results/reproduce', ReproducibilityFlags.REPRODUCE)
+    print("Replication Hash Collection")
+    collect(base_loc + 'results/double/config/', base_loc + 'results/replicate_sci', ReproducibilityFlags.REPLICATE_SCI)
+    collect(base_loc + 'results/double/config/', base_loc + 'results/replicate_comp',
+            ReproducibilityFlags.REPLICATE_COMP)
+    collect(base_loc + 'results/double/config/', base_loc + 'results/replicate_total',
+            ReproducibilityFlags.REPLICATE_TOTAL)
 
 
 if __name__ == "__main__":

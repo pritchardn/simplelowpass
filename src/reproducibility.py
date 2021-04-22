@@ -113,7 +113,7 @@ def generate_file_reprodata(data, filename, inports, outports):
         'streaming': False,
     }, 'lg_data': {
         'data_volume': '5',
-        'check_filepath_exists': '0',
+        'check_filepath_exists': '1',
         'filepath': filename,
         'dirname': '',
     }, 'pgt_data': {

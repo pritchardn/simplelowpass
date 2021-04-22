@@ -2106,8 +2106,10 @@
     },
     "lg_data": {
       "data_volume": "5",
-      "check_filepath_exists": "0",
-      "merkleroot": "2020d1b771f763a537608109828fef1f89ab9f80d8d9b13927f3d5cfd0bd6d81"
+      "check_filepath_exists": "1",
+      "filepath": "../results/double/config/noisy/10_cufft.out",
+      "dirname": "",
+      "merkleroot": "c6f532862bf76e06b4b985ab6fd0df7f8aa346259f514b53ad9a11d126013712"
     },
     "pgt_data": {
       "type": "plain",
@@ -2125,19 +2127,19 @@
     "lg_parenthashes": {
       "0": "9074164dfdf9fdc600de7c38492da0972e82f7dc6faa9103a8f0898f1b38f555"
     },
-    "lg_blockhash": "e77435a10607e925cb6c06caac77a20378883927d0fc4f10e4fd227b69957eda",
+    "lg_blockhash": "f8ca0818d418486da3eedc2f51aa1a8934a33585af8f3b104e60a2d9d9dd3b93",
     "pgt_parenthashes": {
       "0": "9f12c8732f4ec48502330fa5822f7a8f11b1f1bf9d307524dd1da25e21a5d14d"
     },
-    "pgt_blockhash": "37934ffb5134c6d3a68f4b11081315077ecbb47600c3a112173c9f769ad10767",
+    "pgt_blockhash": "b112c48ac5933e21016cc97958fccd83ca81b109c2e92686c55273c536a17ec8",
     "pg_parenthashes": {
       "0": "e7531c805ceb771f5f49f23c9ab2dfa368af06fbbfd41b3974359b1addb6ce96"
     },
-    "pg_blockhash": "183b5ba6aa75f266ed1ae0ce0c366591a1d283a207b00c234d96d8620fa0f673",
+    "pg_blockhash": "c410bd8880cbcb59aaba01ced8f0a6781f8eab3992b0dbd072723a6e8553402a",
     "rg_parenthashes": {
       "0": "d4e84679886fbfb1b7e41a92a24a28e74c9735fe9a13860ef7e961f66acebba0"
     },
-    "rg_blockhash": "0a4631d35a63974cd6686b78a80e7c42853f36abc4200ad4ce0fe98442980077"
+    "rg_blockhash": "d68a8de6d3ef24e2fa65e2a122c773971ea75ef6c3ce309ab0c0a345af419287"
   },
-  "signature": "9cb435a4dcad1b5259ad91e26544ea20d7438f7d60092cb11d2f45fdc1a8c241"
+  "signature": "b87e0fd3df41ef1045893ff6f53e9714ff320c4f6ab3f46a6e95a84daca45ac6"
 }
